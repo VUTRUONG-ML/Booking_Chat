@@ -1,51 +1,57 @@
 import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { updateRoom, reset } from "../../features/room/roomSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { uploadImage } from "../helper/utils";
-import { createRoom, reset } from "../features/room/roomSlice";
-const CreateRoom = () => {
-    const navigate = useNavigate();
+
+
+const EditRoom = () => {
     const dispatch = useDispatch();
-
-    const { user } = useSelector((state) => state.auth);
-    const { isSuccess } = useSelector((state) => state.room);
-    const [files, setFiles] = useState("");
+    const navigate = useNavigate();
+    const { isSuccess } = useSelector((state) => state.room)
+    const { id } = useParams();
     const [formData, setFormData] = useState({
-        name: "test",
-        price: 200,
-        desc: "adadasd",
-        roomNumbers: "401, 203, 232, 234"
+        name: "",
+        price: "",
+        desc: "",
+        roomNumbers: "",
     })
-
     const { name, price, desc, roomNumbers } = formData;
-
     useEffect(() => {
-        if (!user) {
-            // navigate to login
-            navigate("/login");
+        const getRoom = async () => {
+            try {
+                const res = await fetch(`/api/rooms/${id}`);
+                const data = await res.json();
+                const { roomNumbers, ...rest } = data;
+                const roomMap = roomNumbers.map((item) => item.number);
+                const roomString = roomMap.join(",");
+                console.log(roomString);
+                setFormData({
+                    ...rest,
+                    roomNumbers: roomString
+
+                })
+            } catch (error) {
+                console.log(error);
+            }
         }
-    }, [user, navigate]);
+        getRoom();
+    }, [id])
 
     useEffect(() => {
         if (isSuccess) {
+            //navigate ro rooms
             dispatch(reset());
             navigate("/rooms");
         }
     }, [isSuccess, dispatch, navigate]);
 
-
     const handleChange = (e) => {
-        setFormData((prevState) => ({
-            ...prevState,
+        setFormData((prev) => ({
+            ...prev,
             [e.target.name]: e.target.value,
         }))
     }
-
-    //handle file change
-    const handleFileChange = (e) => {
-        setFiles(e.target.files);
-    }
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         if (!name || !price || !roomNumbers) {
             return;
@@ -56,28 +62,20 @@ const CreateRoom = () => {
                 unavailableDates: [],
             };
         });
-
-        let list = [];
-        list = await Promise.all(
-            Object.values(files).map(async (file) => {
-                const url = await uploadImage(file);
-                return url;
-            })
-        );
         const dataToSubmit = {
             name,
             price,
             desc,
             roomNumbers: roomArray,
-            img: list,
+            roomId: id,
         }
-        //dispatch createRoom function
-        dispatch(createRoom(dataToSubmit));
+        dispatch(updateRoom(dataToSubmit));
+
     }
     return (
         <div className="container">
             <div>
-                <h1 className="heading center">Create Room</h1>
+                <h1 className="heading center">Edit Room</h1>
                 <div className="form-wrapper">
                     <form onSubmit={handleSubmit}>
                         <div className="input-group">
@@ -121,21 +119,14 @@ const CreateRoom = () => {
                             ></textarea>
                         </div>
 
-                        <div className="input-group">
-                            <label htmlFor="img">Images</label>
-                            <input
-                                type="file"
-                                name="file"
-                                multiple
-                                onChange={handleFileChange}
-                            />
-                        </div>
+
                         <button type="submit">Submit</button>
                     </form>
                 </div>
             </div>
         </div >
+
     )
 }
 
-export default CreateRoom
+export default EditRoom
