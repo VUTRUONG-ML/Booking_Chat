@@ -1,0 +1,40 @@
+#room-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+#room-list .room-unit {
+  text-align: center;
+}
+#room-list .room-unit p {
+  font-size: 1.2rem;
+  text-transform: capitalize;
+}
+#room-list img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+#room-list .img-wrapper {
+  height: 300px;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 800px) {
+  #room-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  #room-list .img-wrapper {
+    height: 200px;
+  }
+}
+@media (max-width: 540px) {
+  #room-list {
+    display: block;
+  }
+  #room-list .room-unit {
+    display: block;
+    margin-bottom: 2rem;
+  }
+}/*# sourceMappingURL=roomList.styles.css.map */
