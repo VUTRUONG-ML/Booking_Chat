@@ -102,3 +102,6 @@ GET http://localhost:5000/api/users/logout
 #check auth
 ### 
 GET http://localhost:5000/auth
+
+### 
+GET http://localhost:5000/api/chat
