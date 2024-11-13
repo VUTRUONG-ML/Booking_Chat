@@ -1,10 +1,14 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import { createBooking, reset } from "../../features/booking/bookingSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Booking = () => {
 
     const { id: roomId } = useParams()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { isSuccess } = useSelector((state) => state.booking);
     const [room, setRoom] = useState(null);
     const [formData, setFormData] = useState({
         name: "",
@@ -31,6 +35,14 @@ const Booking = () => {
         getRoom();
     }, [])
 
+    useEffect(() => {
+        if (isSuccess) {
+            navigate("/success");
+            dispatch(reset());
+
+        }
+    })
+
     const handleChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -47,7 +59,7 @@ const Booking = () => {
             checkInDate,
             checkOutDate
         }
-        console.log(dataTosubmit);
+        dispatch(createBooking(dataTosubmit));
     }
     return (
         <div>

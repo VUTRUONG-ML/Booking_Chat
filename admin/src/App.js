@@ -9,6 +9,7 @@ import CreateRoom from "./Pages/CreateRoom";
 import Room from "./Pages/Room/Room";
 import Rooms from "./Pages/Rooms/Rooms";
 import EditRoom from "./Pages/EditRoom/EditRoom";
+import Booking from "./Pages/Booking/Booking";
 
 
 function App() {
@@ -25,6 +26,10 @@ function App() {
           <Route path="/rooms/create" element={<CreateRoom />} />
           <Route path="/rooms/all/:id" element={<Room />} />
           <Route path="/rooms/edit/:id" element={<EditRoom />} />
+          <Route path="/bookings/:id" element={<Booking />} />
+
+
+
 
 
 
