@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const roomRoutes = require("./routes/roomRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const userRoutes = require("./routes/userRoutes");
+const chatRoute = require("./routes/chatRoutes");
 const cookieParser = require("cookie-parser");
 const { auth } = require("./middleware/authMiddleware");
 const port = process.env.POT || 5000;
@@ -22,7 +23,7 @@ app.use("/auth", auth)
 app.use("/api/rooms", roomRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/users", userRoutes);
-
+app.use("/api/chat", chatRoute);
 
 
 
