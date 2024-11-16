@@ -6,6 +6,7 @@ import Room from "./Pages/Room/Room";
 import Header from "./component/Header/Header";
 import Booking from "./Pages/Booking/Booking";
 import Chat from "./Pages/Chat/Chat";
+import Login from "./Pages/Login/Login";
 const App = () => {
   return (
     <div>
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/bookings/:id" element={<Booking />} />
           <Route path="/bookings/:id" element={<Booking />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/login" element={<Login />} />
 
         </Routes>
       </Router>
