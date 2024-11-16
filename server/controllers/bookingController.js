@@ -60,7 +60,7 @@ const deleteBooking = async (req, res, next) => {
 //get single booking
 const getBooking = async (req, res, next) => {
     try {
-        const booking = await Booking.findById(req.params.id);
+        const booking = await Booking.findById(req.params.id).populate("roomId");
         if (!booking) {
             res.status(400);
             throw new Error("Booking not found!")
