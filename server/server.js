@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const roomRoutes = require("./routes/roomRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const userRoutes = require("./routes/userRoutes");
+const userClientRoutes = require("./routes/userClientRoutes");
 const chatRoute = require("./routes/chatRoutes");
 const cookieParser = require("cookie-parser");
 const { auth } = require("./middleware/authMiddleware");
@@ -15,8 +16,8 @@ connectDB();
 
 //setup middlewares
 app.use(cookieParser());
-app.use(express.json());
-
+app.use(express.json()); // To accept JSON Data
+require("dotenv").config();
 
 //setup routes
 app.use("/auth", auth)
@@ -24,6 +25,7 @@ app.use("/api/rooms", roomRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/chat", chatRoute);
+app.use("/api/userClient", userClientRoutes);
 
 
 
