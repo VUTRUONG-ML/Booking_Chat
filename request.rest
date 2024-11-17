@@ -94,6 +94,27 @@ Content-Type: application/json
     "email": "123@gmail.com", "password": "12"
 }
 
+
+#create user client
+### 
+POST http://localhost:5000/api/userClient/
+Content-Type: application/json
+
+{
+    "name": "hoangthien",
+    "email": "la3@gmail.com", 
+    "password": "8888888812"
+}
+
+#login user client
+### 
+POST http://localhost:5000/api/userClient/login
+Content-Type: application/json
+
+{
+ "email": "la3@gmail.com", "password": "8888888812"
+}
+
 #logout user 
 ### 
 GET http://localhost:5000/api/users/logout
@@ -103,5 +124,18 @@ GET http://localhost:5000/api/users/logout
 ### 
 GET http://localhost:5000/auth
 
+#------------------- 
+#chat
 ### 
 GET http://localhost:5000/api/chat
+
+#------------------- 
+#registerClient
+###
+POST  http://localhost:5000/api/userClient
+Content-Type: application/json
+{
+    "name": "Lefghdsasdffgh Bar",
+    "email": "123@gmail.com",
+    "password": "1234567",
+}
