@@ -1,5 +1,5 @@
 import { Button, Fieldset, Input, Stack } from "@chakra-ui/react";
-import { Field } from "E:/js/Booking-app/client/src/components/ui/field";
+import { Field } from "../../components/ui/field";
 
 const Signup = () => {
   return (

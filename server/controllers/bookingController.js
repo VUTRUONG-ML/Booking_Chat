@@ -2,7 +2,7 @@ const Booking = require("../models/bookingModel");
 
 const getBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find();
+        const bookings = await Booking.find().populate("roomId");
         if (!bookings) {
             res.status(400);
             throw new Error("Cannot find bookings!");

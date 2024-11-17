@@ -1,0 +1,185 @@
+// Variables
+$primary-color: black; // Booking app theme color (green)
+$secondary-color: #FFC107; // Accent color (yellow)
+$text-color: #212121; // Dark text color
+$muted-color: #757575; // Muted text color
+$background-color: #f5f5f5; // Light gray background
+$card-background: #ffffff; // White card background
+$border-radius: 10px;
+$box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+$font-family: 'Roboto', sans-serif;
+$confirm-color: #28a745; // Green
+$delete-color: #dc3545; // Red
+$button-text-color: #fff;
+$button-hover: 0.95;
+$border-radius: 5px;
+$box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+// Mixins
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin responsive-padding($padding-desktop, $padding-mobile) {
+    padding: $padding-desktop;
+
+    @media (max-width: 768px) {
+        padding: $padding-mobile;
+    }
+}
+
+// Global Styles
+body {
+    font-family: $font-family;
+    margin: 0;
+    padding: 0;
+    background-color: $background-color;
+    color: $text-color;
+}
+
+.center {
+    text-align: center;
+}
+
+// Booking Component Styles
+.booking-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    @include responsive-padding(2rem, 1rem);
+    background: $card-background;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    overflow: hidden;
+}
+
+.heading {
+    font-size: 2.5rem;
+    margin: 1rem 0;
+    color: $primary-color;
+    text-align: center;
+    font-weight: bold;
+}
+
+.text-wrapper {
+    padding: 2rem;
+    border-top: 5px solid $primary-color;
+
+    .booking-info {
+        margin-bottom: 1.5rem;
+
+        .label {
+            font-size: 1rem;
+            color: $muted-color;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+        }
+
+        .value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: $text-color;
+        }
+    }
+}
+
+.booking-dates {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+
+    .date-info {
+        text-align: center;
+
+        .label {
+            font-size: 1rem;
+            color: $muted-color;
+            margin-bottom: 0.5rem;
+        }
+
+        .date {
+            font-size: 1.2rem;
+            color: $primary-color;
+            font-weight: bold;
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .booking-dates {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .text-wrapper {
+        padding: 1rem;
+    }
+
+    .heading {
+        font-size: 2rem;
+    }
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    .btn {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        transition: all 0.3s ease;
+
+        // Gradient background with animation
+        &:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+            z-index: 1;
+            transition: left 0.3s ease;
+        }
+
+        &:hover:before {
+            left: 100%;
+        }
+
+        // Confirm button style
+        &.confirm-btn {
+            background: linear-gradient(90deg, #4caf50, #43a047);
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+
+            &:hover {
+                background: linear-gradient(90deg, #43a047, #388e3c);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(67, 160, 71, 0.4);
+            }
+        }
+
+        // Delete button style
+        &.delete-btn {
+            background: linear-gradient(90deg, #e53935, #d32f2f);
+            box-shadow: 0 4px 10px rgba(229, 57, 53, 0.3);
+
+            &:hover {
+                background: linear-gradient(90deg, #d32f2f, #b71c1c);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(211, 47, 47, 0.4);
+            }
+        }
+    }
+}

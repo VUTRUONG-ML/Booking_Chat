@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "module": "ESNext",      // Thay "commonjs" thành "ESNext"
-    "skipLibCheck": true,    // Không thay đổi
+    "module": "ESNext", // Thay "commonjs" thành "ESNext"
+    "skipLibCheck": true, // Không thay đổi
     "moduleResolution": "Node",
-    
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   }
 }

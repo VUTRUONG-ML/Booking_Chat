@@ -1,7 +1,10 @@
+import "./home.styles.scss";
 const Home = () => {
     return (
         <div>
-            Home
+            <div className="imag-wra">
+                <img src="/images/landing-1.jpeg" alt="" />
+            </div>
         </div>
     )
 }

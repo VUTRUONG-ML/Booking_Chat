@@ -46,6 +46,26 @@ export const getBookings = createAsyncThunk(
     }
 );
 
+export const deleteBooking = createAsyncThunk("booking/delete", async (id, thunkApi) => {
+    try {
+        const res = await fetch(`/api/bookings/${id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "DELETE",
+        })
+        const data = await res.json();
+        if (!res.ok) {
+            return thunkApi.rejectWithValue(data);
+        }
+        return data;
+    } catch (error) {
+        console.log(error.message);
+        return thunkApi.rejectWithValue(error.message);
+    }
+})
+
+
 export const bookingSlice = createSlice({
     name: "booking",
     initialState,
@@ -82,6 +102,19 @@ export const bookingSlice = createSlice({
                 state.bookings = action.payload;
             })
             .addCase(getBookings.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(deleteBooking.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteBooking.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.bookings = state.bookings.filter(booking => booking._id.toString() !== action.payload.id);
+            })
+            .addCase(deleteBooking.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;

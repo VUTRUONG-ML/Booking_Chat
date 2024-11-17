@@ -1,3 +1,4 @@
+import "./booking.styles.scss";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { createBooking, reset } from "../../features/booking/bookingSlice";
