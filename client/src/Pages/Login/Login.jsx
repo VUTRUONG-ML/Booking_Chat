@@ -1,8 +1,19 @@
 import "./Login.scss";
+import { useEffect } from "react";
 import { Container, Box, Text, Tabs  } from "@chakra-ui/react"
 import UserLogin from "../../component/Authentication/UserLogin";
 import Signup from "../../component/Authentication/Signup";
+import { useNavigate  } from "react-router-dom";
 const Login = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+        if(userInfo){
+            navigate("/");
+        }
+    },[navigate]);
     return (<div className="login">
         <Container maxW="xl" centerContent>
             <Box

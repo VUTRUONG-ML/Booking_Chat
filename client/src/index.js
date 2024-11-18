@@ -7,6 +7,8 @@ import { ChakraProvider, defaultSystem } from "@chakra-ui/react"
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import ChatProvider from './Context/ChatProvider';
+import { BrowserRouter } from 'react-router-dom';
 const container = document.getElementById('root');
 const root = createRoot(container);
 
@@ -14,9 +16,13 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ChakraProvider value={defaultSystem}> 
-        <App />
-      </ChakraProvider>
+      <BrowserRouter>
+        <ChatProvider>
+          <ChakraProvider value={defaultSystem}> 
+            <App />
+          </ChakraProvider>
+        </ChatProvider>
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );

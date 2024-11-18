@@ -56,7 +56,6 @@ const authUser = expressAsyncHandler(async (req, res, next) => {
         if (!isCorrect) {
             res.status(401);
             throw new Error("incorrect password!");
-
         }
         //generate token set 
         //set cookie
@@ -71,7 +70,22 @@ const authUser = expressAsyncHandler(async (req, res, next) => {
         next(error);
     }
 });
+
+// /api/userClient?search=lebar
+const allUsers = expressAsyncHandler( async(req, res) => {
+    const keyword = req.query.search 
+        ? {
+            $or: [
+                { name: { $regex: req.query.search, $options: "i"}},
+                { email: { $regex: req.query.search, $options: "i"}},
+            ],
+        }
+        : {};
+    const users = await User.find(keyword).find({_id: { $ne: req.user._id } }); // Tìm tất cả người dùng của keyword trên bỏ qua người dùng hiện tại
+    res.send(users);
+});
 module.exports = {
     registerUser,
     authUser,
+    allUsers,
 }

@@ -1,6 +1,6 @@
 const dotenv = require("dotenv").config();
 const express = require("express");
-const { errorHandler } = require("./middleware/errorHandler");
+const { errorHandler, notFound } = require("./middleware/errorHandler");
 const app = express();
 const connectDB = require("./config/db");
 const roomRoutes = require("./routes/roomRoutes");
@@ -19,6 +19,8 @@ app.use(cookieParser());
 app.use(express.json()); // To accept JSON Data
 require("dotenv").config();
 
+
+
 //setup routes
 app.use("/auth", auth)
 app.use("/api/rooms", roomRoutes);
@@ -28,7 +30,8 @@ app.use("/api/chat", chatRoute);
 app.use("/api/userClient", userClientRoutes);
 
 
+app.use(notFound);
+app.use(errorHandler);
 
-app.use(errorHandler)
 
 app.listen(port, () => console.log(`listening on on port ${port}`));
