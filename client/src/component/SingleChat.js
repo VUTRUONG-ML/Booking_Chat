@@ -20,7 +20,7 @@ var socket, selectedChatCompare;
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [newMessage, setNewMessage] = useState("");
+    const [newMessage, setNewMessage] = useState();
     const [typing, setTyping] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
     const [socketConnected, setSocketConnected] = useState(false); 
@@ -38,65 +38,73 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
     const {user, selectedChat, setSelectedChat, notification,setNotification} = ChatState();
 
-    const fetchMessage = async() => {
-        if(!selectedChat) return;
+const fetchMessage = async () => {
+    if (!selectedChat) return;
 
-        try {
-            const config = {
-                headers:{
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
+    try {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        };
 
-            setLoading(true);
+        setLoading(true);
+        const { data } = await axios.get(`/api/message/${selectedChat._id}`, config);
+        
+        setMessages(data);
+        console.log("Messages fetched:", data);
+    } catch (error) {
+        toaster.create({
+            title: "Error Occurred!",
+            description: "Failed to fetch messages",
+            type: "error", 
+            placement: "bottom"
+        });
+    } finally {
+        setLoading(false); // Đặt loading thành false ở đây
+    }
+};
 
-            const {data} = await axios.get(`/api/message/${selectedChat._id}`, config);
-            
-            setMessages(data);
-
-            console.log(messages);
-            setLoading(false);
-            socket.emit('join chat', selectedChat._id);
-        } catch (error) {
-            toaster.create({
-                title:"Error Occured!",
-                description: "Failed to send the Message",
-                type: "error", 
-                placement:"bottom"
-            });
-        }
-    };
-
-    useEffect(() =>{
+    useEffect(() => {
         socket = io(ENDPOINT);
         socket.emit("setup", user);
-        socket.on("connected", () => setSocketConnected(true))
+        socket.on("connected", () => setSocketConnected(true));
         socket.on("typing", () => setIsTyping(true));
         socket.on("stop typing", () => setIsTyping(false));
 
-    },[])
+        // Dọn dẹp khi component unmount
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
 
 
-    useEffect(() =>{
-        fetchMessage();
-
-        selectedChatCompare = selectedChat;
-    }, [selectedChat])
+    useEffect(() => {
+        if (selectedChat) {
+            fetchMessage();
+            selectedChatCompare = selectedChat; // Cập nhật biến so sánh
+        }
+    }, [selectedChat]);
 
     
-    useEffect(()=>{
-        socket.on('message recieved',(newMessageRecieved) => {
+    useEffect(() => {
+        socket.on('message recieved', (newMessageRecieved) => {
             console.log("Message received:", newMessageRecieved);
-            if(!selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id){
-                if(!notification.includes(newMessageRecieved)){
-                    setNotification([newMessageRecieved, ...notification])
-                    setFetchAgain(!fetchAgain)
+            if (!selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id) {
+                if (!notification.includes(newMessageRecieved)) {
+                    setNotification([newMessageRecieved, ...notification]);
+                    setFetchAgain(!fetchAgain);
                 }
-            }else{
-                setMessages([...messages, newMessageRecieved]); 
+            } else {
+                setMessages((prevMessages) => [...prevMessages, newMessageRecieved]); // Sử dụng callback để cập nhật state
             }
         });
-    },[messages, selectedChatCompare]);
+
+        // Dọn dẹp khi component unmount hoặc selectedChatCompare thay đổi
+        return () => {
+            socket.off('message recieved');
+        };
+    }, [messages, selectedChatCompare, notification]);
 
     const sendMessage = async(event) => {
         if(event.key==="Enter" && newMessage){
@@ -109,8 +117,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
                     },
                 };
 
-
-                setNewMessage("");
  
                 const {data} = await axios.post('/api/message',{
                     content: newMessage,
@@ -118,8 +124,11 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
                 }, config);
                 
 
-                socket.emit('new message', data);
-                setMessages([...messages, data]);
+                if (data) { // Check if data is valid
+                    socket.emit('new message', data);
+                    setMessages((prevMessages) => [...prevMessages, data]); // Use callback to ensure state is updated correctly
+                    setNewMessage(""); // Clear the input after sending
+                }
             } catch (error) {
                 toaster.create({
                     title:"Error Occured!",
@@ -134,24 +143,26 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     const typingHandler = (e) => {
         setNewMessage(e.target.value);
 
-        if(!socketConnected) return;
-        
-        if(!typing){
+        if (!socketConnected) return;
+
+        if (!typing) {
             setTyping(true);
             socket.emit('typing', selectedChat._id);
         }
+        
         let lastTypingTime = new Date().getTime();
-        var timerLength = 3000;
-        setTimeout(()=>{
-            var timeNow = new Date().getTime();
-            var timeDiff = timeNow - lastTypingTime
+        const timerLength = 3000;
 
-            if(timeDiff >= timerLength && typing){
-                socket.emit('stop typing', selectedChat._id); 
+        setTimeout(() => {
+            const timeNow = new Date().getTime();
+            const timeDiff = timeNow - lastTypingTime;
+
+            if (timeDiff >= timerLength && typing) {
+                socket.emit('stop typing', selectedChat._id);
                 setTyping(false);
             }
-        }, timerLength)
-    }
+        }, timerLength);
+    };
   return (<>{
     selectedChat ? (
         <>

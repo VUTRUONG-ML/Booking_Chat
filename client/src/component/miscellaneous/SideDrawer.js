@@ -1,7 +1,7 @@
 import { Tooltip } from "../../components/ui/tooltip"
 import { Box, Button,Spinner,Text, useDisclosure,   } from '@chakra-ui/react';
 import React, { useState } from 'react'
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaComments } from "react-icons/fa";
 import { ChatState } from "../../Context/ChatProvider";
 import { MenuContent, MenuItem,MenuRoot,MenuTrigger,} from "../../components/ui/menu"
 import { useNavigate  } from "react-router-dom";
@@ -31,47 +31,55 @@ const SideDrawer = () => {
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [loadingChat, setLoadingChat] = useState(false);
+    const [loadingChat, setLoadingChat] = useState();
+
+    const IdStaff = "674063576e58f0248e8afb38";
 
     const {isOpen, onOpen} = useDisclosure();
     const navigate = useNavigate(); 
-    const logoutHandler = () => {
-        localStorage.removeItem("userInfo");
-        navigate("/");
-    };
 
-    const handleSearch = async () =>{
-        if(!search){
+
+    const handleSearch = async () => {
+        if (!search) {
             toaster.create({
-                title: "Please Fill all the feilds",
+                title: "Please Fill all the fields",
                 type: "warning",
-                placement:"bottom-end"
+                placement: "bottom-end"
             });
-            return; 
+            return;
         }
 
-        try {
-            setLoading(true)
+        // Kiểm tra xem người dùng có phải là IdStaff không
+        if (user._id !== IdStaff) {
+            toaster.create({
+                title: "Access Denied",
+                description: "You can only message with the staff member.",
+                type: "error",
+                placement: "bottom-end"
+            });
+            return; // Ngừng hàm nếu không phải là IdStaff
+        }
 
+        // Tiến hành tìm kiếm nếu là IdStaff
+        try {
+            setLoading(true);
             const config = {
                 headers: {
                     Authorization: `Bearer ${user?.token || ''}`,
                 },
             };
 
-            const {data} = await axios.get(`/api/userClient?search=${search}`, config);
-
+            const { data } = await axios.get(`/api/userClient?search=${search}`, config);
             setLoading(false);
             setSearchResult(data);
         } catch (error) {
             toaster.create({
-                title: "Error Occured",
+                title: "Error Occurred",
                 description: "Failed to Load the Search Results",
                 type: "error",
-                placement:"bottom-end"
+                placement: "bottom-end"
             });
         }
-
     };
 
     const accessChat = async(userId) => {
@@ -103,6 +111,7 @@ const SideDrawer = () => {
             setLoadingChat(false);
         }
     };
+    const isStaff = user._id === IdStaff;
     return <>
 
         <Toaster/>
@@ -112,77 +121,95 @@ const SideDrawer = () => {
             alignItems="center"
             bg="white"
             w="100%"
-            padding="5px 10px 5px 10px"
+            padding="5px 10px"
             borderWidth="5px"
         >
-            <Tooltip
-                label="Search Users to chat"
-                hasArrow
-                placement="bottom-end"
-            >
-                
-                <DrawerRoot placement="start" size="xs" isOpen={isOpen} >
-                    <DrawerTrigger asChild>
-                        <Button variant="ghost"  onClick={onOpen}> 
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <Text display={{ base: "none", md: "flex"}} px="4">Search User</Text>
-                        </Button>
-                    </DrawerTrigger>
-                    <DrawerContent>
-                        <DrawerHeader>
-                            <DrawerTitle >Search User</DrawerTitle>
-                        </DrawerHeader>
-                        <DrawerBody>
-                            <Box display="flex" pb={2}>
-                                <Input
-                                    placeholder="Search by name or email" 
-                                    mr={2}
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}    
-                                />
-                                <Button onClick={handleSearch}>
-                                    Go
-                                </Button>
-                            </Box>
-                            {loading ? 
-                                (
-                                    <ChatLoading/>
-                                ) : 
-                                (
+            {isStaff ? (
+                <Tooltip
+                    label="Search Users to chat"
+                    hasArrow
+                    placement="bottom-end"
+                >
+                    <DrawerRoot placement="start" size="xs" isOpen={isOpen}>
+                        <DrawerTrigger asChild>
+                            <Button variant="ghost" onClick={onOpen}>
+                                <i className="fa-solid fa-magnifying-glass"></i>
+                                <Text display={{ base: "none", md: "flex" }} px="4">Search User</Text>
+                            </Button>
+                        </DrawerTrigger>
+                        <DrawerContent>
+                            <DrawerHeader>
+                                <DrawerTitle>Search User</DrawerTitle>
+                            </DrawerHeader>
+                            <DrawerBody>
+                                <Box display="flex" pb={2}>
+                                    <Input
+                                        placeholder="Search by name or email"
+                                        mr={2}
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                    />
+                                    <Button onClick={handleSearch}>
+                                        Go
+                                    </Button>
+                                </Box>
+                                {loading ? (
+                                    <ChatLoading />
+                                ) : (
                                     searchResult?.map(user => (
                                         <UserListItem
                                             key={user._id}
                                             user={user}
-                                            handleFunction = {() => accessChat(user._id)}
+                                            handleFunction={() => accessChat(user._id)}
                                         />
                                     ))
-                                )
-                            }
-                            {loadingChat && <Spinner ml="auto" display="flex" />}
-                        </DrawerBody>
-                        <DrawerFooter>
-                        <DrawerActionTrigger asChild>
-                            <Button variant="outline" >Cancel</Button>
-                        </DrawerActionTrigger>
-                        <Button>Save</Button>
-                        </DrawerFooter>
-                    </DrawerContent>
-                </DrawerRoot>    
-            </Tooltip>
+                                )}
+                                {loadingChat && <Spinner ml="auto" display="flex" />}
+                            </DrawerBody>
+                            <DrawerFooter>
+                                <DrawerActionTrigger asChild>
+                                    <Button variant="outline">Cancel</Button>
+                                </DrawerActionTrigger>
+                                <Button>Save</Button>
+                            </DrawerFooter>
+                        </DrawerContent>
+                    </DrawerRoot>
+                </Tooltip>
+            ) : (
+                <Button 
+                    onClick={() => accessChat(IdStaff)} 
+                    colorScheme="blue" 
+                    variant="solid"
+                    display="flex" // Sử dụng Flexbox
+                    alignItems="center" // Căn giữa theo chiều dọc
+                    justifyContent="center" // Căn giữa theo chiều ngang
+                    _hover={{ bg: "blue.600", color: "white" }} // Hiệu ứng hover
+                >
+                    <FaComments style={{ marginLeft:"7px" }} /> {/* Thay đổi margin để tạo khoảng cách giữa icon và chữ */}
+                    Chat with staff
+                </Button>
+            )}
             <Text d="inline-block" flex="1" fontSize="2xl" textAlign="center" right='10px'>
                 Support
             </Text>
             <div>
+                <Button 
+                    variant="outline" 
+                    size="sm" 
+                    // rightIcon={} // Thêm biểu tượng chuông
+                >
+                    {user.email}
+                </Button>
                 <MenuRoot p={1}>
                     <MenuTrigger asChild>
-                        <Button variant="outline" size="sm"  >
-                            <FaBell />
-                            <NotificationBadge
-                                count = {notification.length}
-                                effect={Effect.SCALE}
-                            />
-                            
-                        </Button>
+                    <Button variant="ghost" size="sm" >
+                        <FaBell style={{ marginLeft: '8px', verticalAlign: 'middle' }} />
+
+                        <NotificationBadge
+                            count={notification.length}
+                            effect={Effect.SCALE}
+                        />
+                    </Button>
                     </MenuTrigger>
                     <MenuContent style={{ paddingRight: '20px' }}>
                         {!notification.length && "No New Messages"}
@@ -190,19 +217,13 @@ const SideDrawer = () => {
                             <MenuItem key={notif._id} onClick={() => {
                                 setSelectedChat(notif.chat);
                                 setNotification(notification.filter((n) => n !== notif));
-                            }}
-                            >
-                                {notif.chat?.isGroupChat === true ? `New Message in ${notification.chat.chatName}` : `New Message from ${getSender(user, notif.chat.users)}`}
+                            }}>
+                                {notif.chat?.isGroupChat ? `New Message in ${notif.chat.chatName}` : `New Message from ${getSender(user, notif.chat.users)}`}
                             </MenuItem>
                         ))}
                     </MenuContent>
-                 </MenuRoot>
-
-                <Button variant="outline" size="sm" borderRadius="md" w="80px" onClick={logoutHandler}>
-                    Logout
-                </Button>
+                </MenuRoot>
             </div>
-
         </Box>
     </>
 }

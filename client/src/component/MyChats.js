@@ -61,12 +61,6 @@ const MyChats = ({ fetchAgain }) => {
         alignItems="center"
       >
         My Chats
-        <Button
-          display="flex"
-          fontSize={{base: "17px", md: "10px", lg: "17px"}}
-        >
-          New Chat
-        </Button>
       </Box>
       <Box
         display="flex"

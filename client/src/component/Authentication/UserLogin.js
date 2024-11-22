@@ -5,14 +5,16 @@ import { PasswordInput } from "../../components/ui/password-input";  // Import P
 import { Toaster,toaster } from "../../components/ui/toaster"
 import axios from "axios";
 import { useNavigate  } from "react-router-dom";
+import { ChatState } from "../../Context/ChatProvider";
 
 const UserLogin = () => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);  // State to manage password visibility
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const {isLoggedIn, setIsLoggedIn} = ChatState();
   const submitHandler = async () =>{
     setLoading(true);
     if(!email || !password){
@@ -47,9 +49,9 @@ const UserLogin = () => {
             isclosable: true,
             position: "bottom",
         });
-
+        setIsLoggedIn(true);
         setLoading(false);
-        navigate("/chat");
+        navigate("/");
     } catch (error) {
         toaster.create({
             title: "Incorrect email or password",
