@@ -1,0 +1,63 @@
+@keyframes slideBackground {
+    0% {
+        background-image: url('../../../public/banner1.png');
+    }
+
+    33% {
+        background-image: url('../../../public/banner2.png');
+    }
+
+    66% {
+        background-image: url('../../../public/banner3.png');
+    }
+
+    100% {
+        background-image: url('../../../public/banner4.png');
+    }
+}
+
+.background {
+    padding-bottom: 20%;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    box-sizing: border-box;
+    animation: slideBackground 8s infinite;
+}
+
+.background h1 {
+    color: #000000;
+    font-size: 4rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: fadeIn 2s ease-in-out;
+    background: linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(255, 255, 255) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.background p {
+    font-size: 1.5rem;
+    margin-top: 0;
+    animation: fadeIn 4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

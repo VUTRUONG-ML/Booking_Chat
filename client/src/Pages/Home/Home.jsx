@@ -1,7 +1,11 @@
+import './Home.styles.scss';
 const Home = () => {
     return (
         <div>
-            <h1 className="heading center">Home</h1>
+            <div className="background">
+                <h1 className='heading'>Welcome to My Booking App</h1>
+                <p>This is a booking app.</p>
+            </div>
         </div>
     )
 }

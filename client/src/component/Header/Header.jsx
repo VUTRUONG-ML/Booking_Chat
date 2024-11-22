@@ -16,7 +16,9 @@ const Header = () => {
         <header className="main-header">
             <div className="container">
                 <Link to="/">
-                    <h1 className="logo">Logo</h1>
+                    <div className="logo">
+                        <img src={process.env.PUBLIC_URL + "/logo.png"} alt="Logo" />
+                    </div>
                 </Link>
                 <nav>
                     <Link to="/">Home</Link>
