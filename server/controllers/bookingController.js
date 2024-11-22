@@ -1,5 +1,5 @@
 const Booking = require("../models/bookingModel");
-const { sendBookingConfirmation } = require("../services/emailService");
+const { sendBookingConfirmation, sendBookingConfirmations, sendDeleteNotification } = require("../services/emailService");
 const getBookings = async (req, res) => {
     try {
         const bookings = await Booking.find().populate("roomId");
@@ -34,10 +34,13 @@ const createBooking = async (req, res, next) => {
             throw new Error("Không thể tạo đặt phòng");
         }
 
+        // Lấy booking đã tạo và populate roomId
+        const populatedBooking = await Booking.findById(booking._id).populate("roomId");
+
         // Gửi email xác nhận sau khi đặt phòng thành công
         await sendBookingConfirmation(req.body.email, {
             name: req.body.name,
-            roomId: req.body.roomId,
+            roomId: populatedBooking.roomId,
             checkInDate: req.body.checkInDate,
             checkOutDate: req.body.checkOutDate
         });
@@ -45,7 +48,7 @@ const createBooking = async (req, res, next) => {
         return res.status(201).json({
             success: true,
             message: "Booking created successfully",
-            data: booking,
+            data: populatedBooking,
         });
 
     } catch (error) {
@@ -71,19 +74,33 @@ const updateBooking = async (req, res, next) => {
         next(error);
     }
 }
-
 const deleteBooking = async (req, res, next) => {
     try {
-        const room = await Booking.findByIdAndDelete(req.params.id);
-        if (!room) {
+        const booking = await Booking.findById(req.params.id).populate("roomId");
+        if (!booking) {
             res.status(400);
             throw new Error("Cannot delete booking!");
         }
-        return res.status(201).json({ id: req.params.id });
+
+        // Gửi email thông báo xóa booking
+        await sendDeleteNotification(booking.email, {
+            name: booking.name,
+            roomId: booking.roomId,
+            checkInDate: booking.checkInDate,
+            checkOutDate: booking.checkOutDate
+        });
+
+        // Xóa booking
+        await Booking.findByIdAndDelete(req.params.id);
+        return res.status(200).json({
+            success: true,
+            message: "Booking deleted successfully",
+            id: req.params.id
+        });
     } catch (error) {
         next(error);
     }
-}
+};
 //get single booking
 const getBooking = async (req, res, next) => {
     try {
@@ -97,11 +114,40 @@ const getBooking = async (req, res, next) => {
         next(error);
     }
 }
+const confirmBooking = async (req, res, next) => {
+    try {
+        const booking = await Booking.findById(req.params.id).populate("roomId");
+        if (!booking) {
+            res.status(400);
+            throw new Error("Booking not found!");
+        }
 
+        // Cập nhật trạng thái xác nhận
+        booking.confirmed = true;
+        await booking.save();
+
+        // Gửi email xác nhận
+        await sendBookingConfirmations(booking.email, {
+            name: booking.name,
+            roomId: booking.roomId,
+            checkInDate: booking.checkInDate,
+            checkOutDate: booking.checkOutDate
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Booking confirmed successfully",
+            data: booking,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 module.exports = {
     getBookings,
     createBooking,
     updateBooking,
     deleteBooking,
-    getBooking
+    getBooking,
+    confirmBooking
 };

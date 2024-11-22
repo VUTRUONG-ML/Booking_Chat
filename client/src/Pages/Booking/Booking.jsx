@@ -17,6 +17,7 @@ const Booking = () => {
         checkOutDate: "",
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
     const { name, email, checkInDate, checkOutDate } = formData;
@@ -53,6 +54,7 @@ const Booking = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setIsSubmitting(true); // Đặt trạng thái isSubmitting thành true
         const dataToSubmit = {
             roomId,
             name,
@@ -70,6 +72,7 @@ const Booking = () => {
         })
             .then(response => response.json())
             .then(data => {
+                setIsSubmitting(false); // Đặt trạng thái isSubmitting thành false
                 if (data.success) {
                     console.log("Booking successful");
                     navigate("/success");
@@ -80,6 +83,7 @@ const Booking = () => {
                 return;
             })
             .catch(err => {
+                setIsSubmitting(false); // Đặt trạng thái isSubmitting thành false nếu có lỗi
                 console.error(err);
                 alert("Có lỗi xảy ra. Vui lòng thử lại.");
             });
@@ -135,8 +139,8 @@ const Booking = () => {
                         />
                     </div>
 
-                    <button type="submit" disabled={isLoading}>
-                        {isLoading ? "Processing..." : "Submit"}
+                    <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Submitting..." : "Submit"}
                     </button>
                 </form>
             </div>

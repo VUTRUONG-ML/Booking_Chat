@@ -46,25 +46,54 @@ export const getBookings = createAsyncThunk(
     }
 );
 
-export const deleteBooking = createAsyncThunk("booking/delete", async (id, thunkApi) => {
-    try {
-        const res = await fetch(`/api/bookings/${id}`, {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "DELETE",
-        })
-        const data = await res.json();
-        if (!res.ok) {
-            return thunkApi.rejectWithValue(data);
-        }
-        return data;
-    } catch (error) {
-        console.log(error.message);
-        return thunkApi.rejectWithValue(error.message);
-    }
-})
+export const deleteBooking = createAsyncThunk(
+    'booking/deleteBooking',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await fetch(`/api/bookings/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
+            // Kiểm tra phản hồi từ server
+            if (!response.ok) {
+                const errorData = await response.json();
+                return rejectWithValue(errorData.message);
+            }
+
+            const data = await response.json();
+            return data; // Trả về dữ liệu phản hồi
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+export const confirmBooking = createAsyncThunk(
+    'booking/confirmBooking',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await fetch(`/api/bookings/confirm/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            // Kiểm tra phản hồi từ server
+            if (!response.ok) {
+                const errorData = await response.json();
+                return rejectWithValue(errorData.message);
+            }
+
+            const data = await response.json();
+            return data; // Trả về dữ liệu phản hồi
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 export const bookingSlice = createSlice({
     name: "booking",
@@ -77,8 +106,7 @@ export const bookingSlice = createSlice({
             state.message = "";
         }
     },
-    extraReducers: builder => {
-        //addd cases here
+    extraReducers: (builder) => {
         builder
             .addCase(createBooking.pending, (state) => {
                 state.isLoading = true;
@@ -112,15 +140,30 @@ export const bookingSlice = createSlice({
             .addCase(deleteBooking.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.bookings = state.bookings.filter(booking => booking._id.toString() !== action.payload.id);
+                state.bookings = state.bookings.filter(
+                    (booking) => booking._id.toString() !== action.payload.id
+                );
             })
             .addCase(deleteBooking.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
             })
-    }
-})
+            .addCase(confirmBooking.pending, (state, action) => {
+                state.isLoading = true;
+            })
+            .addCase(confirmBooking.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.bookings = action.payload;
+            })
+            .addCase(confirmBooking.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            });
+    },
+});
 
 export const { reset } = bookingSlice.actions;
 

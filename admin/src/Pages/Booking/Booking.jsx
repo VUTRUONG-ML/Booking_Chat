@@ -1,24 +1,29 @@
 import "./booking.styles.scss";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { deleteBooking, reset } from "../../features/booking/bookingSlice";
+import { deleteBooking, confirmBooking, reset } from "../../features/booking/bookingSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Booking = () => {
     const { id } = useParams();
     const [booking, setBooking] = useState(null);
-    const dispatch = useDispatch();
-    const { isSuccess } = useSelector((state) => state.booking);
-    const navigate = useNavigate();
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isConfirming, setIsConfirming] = useState(false);
 
+    const dispatch = useDispatch();
+    const { isSuccess, isError, message } = useSelector((state) => state.booking);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (isSuccess) {
-            //navigate to bookings
-            navigate("/dashboard");
+            navigate("/dashboard"); // Chuyển hướng đến trang dashboard
             dispatch(reset());
         }
-    }, [isSuccess, navigate, dispatch]);
+        if (isError) {
+            dispatch(reset());
+        }
+    }, [isSuccess, isError, message, navigate, dispatch]);
+
     useEffect(() => {
         dispatch(reset());
         const getBooking = async () => {
@@ -31,14 +36,34 @@ const Booking = () => {
             }
         }
         getBooking();
-    }, [])
-    console.log(booking);
-    const handleConfirm = () => {
-    }
-    const handleDelete = () => {
-        dispatch(deleteBooking(id));
+    }, [dispatch, id]);
 
-    }
+    const handleConfirm = () => {
+        if (window.confirm("Bạn có chắc chắn muốn xác nhận booking này không?")) {
+            setIsConfirming(true); // Đặt trạng thái isConfirming thành true
+            dispatch(confirmBooking(id)).then(() => {
+                setIsConfirming(false); // Đặt trạng thái isConfirming thành false
+                alert("Booking đã được xác nhận thành công!"); // Hiển thị thông báo sau khi xác nhận thành công
+            }).catch(() => {
+                setIsConfirming(false); // Đặt trạng thái isConfirming thành false nếu có lỗi
+                alert("Có lỗi xảy ra khi xác nhận booking.");
+            });
+        }
+    };
+
+    const handleDelete = () => {
+        if (window.confirm("Bạn có chắc chắn muốn xóa booking này không?")) {
+            setIsDeleting(true); // Đặt trạng thái isDeleting thành true
+            dispatch(deleteBooking(id)).then(() => {
+                setIsDeleting(false); // Đặt trạng thái isDeleting thành false
+                alert("Booking đã được xóa thành công!"); // Hiển thị thông báo sau khi xóa thành công
+            }).catch(() => {
+                setIsDeleting(false); // Đặt trạng thái isDeleting thành false nếu có lỗi
+                alert("Có lỗi xảy ra khi xóa booking.");
+            });
+        }
+    };
+
     return (
         <div className="booking-container">
             <h1 className="heading">Booking Details</h1>
@@ -72,18 +97,17 @@ const Booking = () => {
                     </div>
 
                     <div className="action-buttons">
-                        <button className="btn confirm-btn" onClick={handleConfirm}>
-                            Confirm
+                        <button className="btn confirm-btn" onClick={handleConfirm} disabled={isConfirming}>
+                            {isConfirming ? "Confirming..." : "Confirm"} {/* Thay đổi văn bản nút xác nhận */}
                         </button>
-                        <button className="btn delete-btn" onClick={handleDelete}>
-                            Delete
+                        <button className="btn delete-btn" onClick={handleDelete} disabled={isDeleting}>
+                            {isDeleting ? "Deleting..." : "Delete"}
                         </button>
                     </div>
                 </div>
             )}
         </div>
     );
-
 }
 
-export default Booking
+export default Booking;
