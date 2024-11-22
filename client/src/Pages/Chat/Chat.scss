@@ -1,3 +1,36 @@
+@keyframes slideBackground {
+    0% {
+        background-image: url('../../../public/banner1.png');
+    }
+
+    33% {
+        background-image: url('../../../public/banner2.png');
+    }
+
+    66% {
+        background-image: url('../../../public/banner3.png');
+    }
+
+    100% {
+        background-image: url('../../../public/banner4.png');
+    }
+}
+
+.background- {
+    padding-bottom: 20%;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    box-sizing: border-box;
+    animation: slideBackground 8s infinite;
+}
+
 .chat-page {
     width: 100%;
     height: 100vh;
@@ -12,13 +45,6 @@
     box-sizing: border-box;
 }
 
-h1 {
-    color: black;
-}
-
-p {
-    color: black;
-}
 
 .chat-container {
     display: flex;

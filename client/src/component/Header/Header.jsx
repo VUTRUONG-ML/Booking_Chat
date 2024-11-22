@@ -20,5 +20,15 @@ const Header = () => {
         </header>
     );
 }
+const links = document.querySelectorAll(".main-header nav");
+
+links.forEach(link => {
+    link.addEventListener("click", () => {
+        links.forEach(item => item.classList.remove("active")); // Xóa lớp active cũ
+        link.classList.add("active"); // Thêm lớp active mới
+    });
+});
+
+
 
 export default Header;

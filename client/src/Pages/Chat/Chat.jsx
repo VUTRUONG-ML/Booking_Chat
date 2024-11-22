@@ -10,7 +10,7 @@ const Chat = () => {
     const { user } = ChatState();
     const [fetchAgain, setFetchAgain] = useState(false);
     return (
-        <div className="background">
+        <div className="background-">
 
             {user && <SideDrawer />}
             <Box className="chat-container">
