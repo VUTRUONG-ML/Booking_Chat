@@ -1,39 +1,145 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@keyframes slideBackground {
+    0% {
+        background-image: url('../../../public/banner1.png');
+    }
 
-// Base styles
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
+    33% {
+        background-image: url('../../../public/banner2.png');
+    }
+
+    66% {
+        background-image: url('../../../public/banner3.png');
+    }
+
+    100% {
+        background-image: url('../../../public/banner4.png');
+    }
 }
 
-.rooms-container {
-    background-size: cover;
-    background-position: center;
-    padding: 50px 0;
-}
+#room {
+    .heading {
+        text-transform: capitalize;
+        font-size: 2rem; // Giảm kích thước phông chữ
+        margin-bottom: 0.8rem; // Giảm margin
+        color: #2c3e50;
+        font-weight: bold;
+        text-align: center;
+        position: relative;
 
-.heading {
-    text-align: center;
-    font-size: 3rem;
-    color: #fff;
-    margin-top: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
+        &::after {
+            content: "";
+            display: block;
+            width: 40px; // Giảm chiều rộng
+            height: 2px; // Giảm chiều cao
+            background: #3498db;
+            margin: 0.4rem auto 0; // Giảm margin
+            border-radius: 2px;
+        }
+    }
 
-.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+    p {
+        font-size: 1rem; // Giảm kích thước phông chữ
+        margin-bottom: 0.8rem; // Giảm margin
+        color: #7f8c8d;
+        line-height: 1.4; // Giảm line-height
+        text-align: justify;
+    }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh; // Giảm chiều cao tối thiểu
+        padding: 15px; // Giảm padding
+    }
+
+    .room-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 20px; // Giảm padding
+        border-radius: 12px; // Giảm bán kính bo góc
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); // Giảm độ đổ bóng
+        max-width: 800px; // Giảm chiều rộng tối đa
+        width: 100%;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover {
+            transform: translateY(-8px); // Giảm khoảng cách dịch chuyển
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); // Giảm độ đổ bóng
+        }
+    }
+
+    .img-wrapper {
+        width: 100%;
+        margin-bottom: 1rem; // Giảm margin
+        overflow: hidden;
+        border-radius: 12px; // Giảm bán kính bo góc
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: scale(1.03); // Giảm tỷ lệ phóng to
+            }
+        }
+    }
+
+    .text-wrapper {
+        text-align: center;
+        margin-bottom: 1rem; // Giảm margin
+
+        h2 {
+            font-size: 1.8rem; // Giảm kích thước phông chữ
+            color: #34495e;
+            font-weight: 600;
+            margin-bottom: 0.3rem; // Giảm margin
+        }
+
+        span {
+            font-size: 1rem; // Giảm kích thước phông chữ
+            color: #95a5a6;
+            font-style: italic;
+        }
+    }
+
+    .cta-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 0.8rem; // Giảm khoảng cách giữa các nút
+        margin-top: 1.5rem; // Giảm margin
+
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.5rem; // Giảm padding
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px; // Giảm bán kính bo góc
+            text-decoration: none;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.03rem; // Giảm khoảng cách giữa các chữ
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3); // Giảm độ đổ bóng
+            transition: background-color 0.3s ease, transform 0.3s ease;
+
+            &:hover {
+                background-color: #2980b9;
+                transform: translateY(-4px); // Giảm khoảng cách dịch chuyển
+            }
+
+            &.delete {
+                background-color: #e74c3c;
+
+                &:hover {
+                    background-color: #c0392b;
+                }
+            }
+        }
+    }
 }
