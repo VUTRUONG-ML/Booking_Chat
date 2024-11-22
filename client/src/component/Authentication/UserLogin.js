@@ -33,12 +33,13 @@ const UserLogin = () => {
                 "Content-type": "application/json",
             },
         };
-
+        
         const {data} = await axios.post(
             "/api/userClient/login", 
             {email, password},
             config,
         );
+        localStorage.setItem("userInfo", JSON.stringify(data));
         toaster.create({
             title: "Login Successful",
             type: "success",
@@ -46,15 +47,14 @@ const UserLogin = () => {
             isclosable: true,
             position: "bottom",
         });
-        localStorage.setItem("userInfo", JSON.stringify(data));
 
         setLoading(false);
         navigate("/chat");
     } catch (error) {
         toaster.create({
-            title: "Error Occured!",
+            title: "Incorrect email or password",
             description: error.response?.data?.message,
-            type: "success",
+            type: "error",
             duration: 5000,
             isclosable: true,
             position: "bottom",

@@ -1,5 +1,5 @@
 import { Tooltip } from "../../components/ui/tooltip"
-import { Box, Button,Text  } from '@chakra-ui/react';
+import { Box, Button,Spinner,Text, useDisclosure,   } from '@chakra-ui/react';
 import React, { useState } from 'react'
 import { FaBell } from "react-icons/fa";
 import { ChatState } from "../../Context/ChatProvider";
@@ -22,15 +22,19 @@ import { toaster, Toaster } from "../../components/ui/toaster"
 import axios from "axios";
 import ChatLoading from "../ChatLoading"; 
 import UserListItem from "../UserClientAvatar/UserListItem";
+import { getSender } from "../../config/ChatLogic";
+import NotificationBadge from 'react-notification-badge';
+import {Effect} from 'react-notification-badge';
 
 const SideDrawer = () => {
-    const { user, setSelectedChat, chats, setChats } = ChatState();
-    const [search, setSearch] = useState();
+    const { user, setSelectedChat, chats, setChats, notification,setNotification } = ChatState();
+    const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [loadingChat, setLoadingChat] = useState();
+    const [loadingChat, setLoadingChat] = useState(false);
 
-    const navigate = useNavigate();
+    const {isOpen, onOpen} = useDisclosure();
+    const navigate = useNavigate(); 
     const logoutHandler = () => {
         localStorage.removeItem("userInfo");
         navigate("/");
@@ -43,7 +47,7 @@ const SideDrawer = () => {
                 type: "warning",
                 placement:"bottom-end"
             });
-            return;
+            return; 
         }
 
         try {
@@ -51,7 +55,7 @@ const SideDrawer = () => {
 
             const config = {
                 headers: {
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${user?.token || ''}`,
                 },
             };
 
@@ -71,6 +75,7 @@ const SideDrawer = () => {
     };
 
     const accessChat = async(userId) => {
+        
         try {
             setLoadingChat(true);
             const config = {
@@ -81,15 +86,21 @@ const SideDrawer = () => {
             };
 
             const {data} = await axios.post('/api/chat', {userId}, config);
+            if(!chats.find((c) => c._id === data._id)) {
+                setChats([data, ...chats]);
+            }
+
             setSelectedChat(data);
+            
             setLoadingChat(false);
-            onclose();
+           
         } catch (error) {
             toaster.create({
                 title: "Error fetching the chat",
                 description: error.message,
                 type: "error",
             });
+            setLoadingChat(false);
         }
     };
     return <>
@@ -110,12 +121,11 @@ const SideDrawer = () => {
                 placement="bottom-end"
             >
                 
-                <DrawerRoot placement="start" size="xs">
-                    <DrawerBackdrop />
+                <DrawerRoot placement="start" size="xs" isOpen={isOpen} >
                     <DrawerTrigger asChild>
-                        <Button variant="ghost" > 
+                        <Button variant="ghost"  onClick={onOpen}> 
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <Text d={{ base: "none", md: "flex"}} px="4">Search User</Text>
+                            <Text display={{ base: "none", md: "flex"}} px="4">Search User</Text>
                         </Button>
                     </DrawerTrigger>
                     <DrawerContent>
@@ -123,7 +133,7 @@ const SideDrawer = () => {
                             <DrawerTitle >Search User</DrawerTitle>
                         </DrawerHeader>
                         <DrawerBody>
-                            <Box mt="5" display="flex" pb={2}>
+                            <Box display="flex" pb={2}>
                                 <Input
                                     placeholder="Search by name or email" 
                                     mr={2}
@@ -139,18 +149,20 @@ const SideDrawer = () => {
                                     <ChatLoading/>
                                 ) : 
                                 (
-                                    searchResult?.map((user) => (
+                                    searchResult?.map(user => (
                                         <UserListItem
                                             key={user._id}
                                             user={user}
                                             handleFunction = {() => accessChat(user._id)}
                                         />
                                     ))
-                            )}
+                                )
+                            }
+                            {loadingChat && <Spinner ml="auto" display="flex" />}
                         </DrawerBody>
                         <DrawerFooter>
                         <DrawerActionTrigger asChild>
-                            <Button variant="outline">Cancel</Button>
+                            <Button variant="outline" >Cancel</Button>
                         </DrawerActionTrigger>
                         <Button>Save</Button>
                         </DrawerFooter>
@@ -163,16 +175,25 @@ const SideDrawer = () => {
             <div>
                 <MenuRoot p={1}>
                     <MenuTrigger asChild>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm"  position="relative">
+                            <NotificationBadge
+                                count = {notification.length}
+                                effect={Effect.SCALE}
+                            />
                             <FaBell />
                         </Button>
                     </MenuTrigger>
-                    <MenuContent>
-                        <MenuItem value="new-txt">New Text File</MenuItem>
-                        <MenuItem value="new-file">New File...</MenuItem>
-                        <MenuItem value="new-win">New Window</MenuItem>
-                        <MenuItem value="open-file">Open File...</MenuItem>
-                        <MenuItem value="export">Export</MenuItem>
+                    <MenuContent style={{ paddingRight: '20px' }}>
+                        {!notification.length && "No New Messages"}
+                        {notification.map(notif => (
+                            <MenuItem key={notif._id} onClick={() => {
+                                setSelectedChat(notif.chat);
+                                setNotification(notification.filter((n) => n !== notif));
+                            }}
+                            >
+                                {notif.chat?.isGroupChat === true ? `New Message in ${notification.chat.chatName}` : `New Message from ${getSender(user, notif.chat.users)}`}
+                            </MenuItem>
+                        ))}
                     </MenuContent>
                  </MenuRoot>
 

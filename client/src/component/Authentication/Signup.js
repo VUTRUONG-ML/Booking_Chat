@@ -27,6 +27,17 @@ const Signup = () => {
         setLoading(false);
         return;
     }
+    if(password != confirmPassword){
+        toaster.create({
+          title: "Incorrect re-entered password ...",
+          type: "warning",
+          duration: 5000,
+          isclosable: true,
+          position: "bottom",
+        });
+        setLoading(false);
+        return;
+    }
 
     try {
         const config ={

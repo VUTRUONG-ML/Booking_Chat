@@ -6,3 +6,14 @@
     background-size: cover;
     background-position: center;
 }
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+::-webkit-slider-thumb {
+    background: rgba(136, 136, 136, 0.281);
+}
+
+::-webkit-slider-thumb:hover {
+    background: #555;
+}

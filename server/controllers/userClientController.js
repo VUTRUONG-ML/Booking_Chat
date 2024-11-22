@@ -2,6 +2,7 @@ const expressAsyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const generateToken = require("../config/generateToken");
+const jwt = require("jsonwebtoken")
 const registerUser = expressAsyncHandler(async (req, res) => {
     const {name, email, password, pic, isAdmin} = req.body;
     //Kiem tra nguoi dung co nhap thong tin hay ko
@@ -48,23 +49,25 @@ const authUser = expressAsyncHandler(async (req, res, next) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            res.status(401).json({});
-            throw new Error("User not found!");
+            res.status(400);
+            throw new Error("user not found!");
         }
         //compare the password
         const isCorrect = await bcrypt.compare(password, user.password);
         if (!isCorrect) {
-            res.status(401);
+            res.status(400);
             throw new Error("incorrect password!");
+
         }
         //generate token set 
         //set cookie
-        const token = generateToken(user._id);
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
         res.cookie("jwt", token);
 
         const { password: userPassword, ...rest } = user._doc;
         return res.status(201).json({
             ...rest,
+            token: generateToken(user._id), 
         });
     } catch (error) {
         next(error);
