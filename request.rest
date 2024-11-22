@@ -82,16 +82,16 @@ POST http://localhost:5000/api/users
 Content-Type: application/json
 
 {
-"name": "Hekki", "email": "123@gmail.com", "password": "123"
+"name": "admin", "email": "123admin@gmail.com", "password": "123"
 }
 
-#login user 
+#login admin 
 ### 
 POST http://localhost:5000/api/users/login 
 Content-Type: application/json
 
 {
-    "email": "123@gmail.com", "password": "12"
+    "email": "123admin@gmail.com", "password": "123"
 }
 
 

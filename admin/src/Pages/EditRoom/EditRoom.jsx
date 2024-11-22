@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { updateRoom, reset } from "../../features/room/roomSlice";
 import { useSelector, useDispatch } from "react-redux";
-
+import "./EditRoom.styles.scss";
 
 const EditRoom = () => {
     const dispatch = useDispatch();

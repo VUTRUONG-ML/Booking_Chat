@@ -62,12 +62,12 @@ const Signup = () => {
             localStorage.setItem("userInfo", JSON.stringify(data));
 
             setLoading(false);
-            navigate("/chat");
+            navigate("/");
         } catch (error) {
             toaster.create({
                 title: "Error Occured!",
                 description: error.response?.data?.message,
-                type: "success",
+                type: "warning",
                 duration: 5000,
                 isclosable: true,
                 position: "bottom",
@@ -135,7 +135,6 @@ const Signup = () => {
             <Toaster />
         </VStack>
     );
-
 };
 
 export default Signup;
