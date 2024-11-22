@@ -67,7 +67,7 @@ const Signup = () => {
             toaster.create({
                 title: "Error Occured!",
                 description: error.response?.data?.message,
-                type: "success",
+                type: "warning",
                 duration: 5000,
                 isclosable: true,
                 position: "bottom",
