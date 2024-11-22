@@ -16,6 +16,17 @@
         margin: 0 auto;
     }
 
+    .namewed {
+        font-family: 'Playfair Display', serif; // Use a beautiful serif font
+        font-size: 2rem; // Increase the font size
+        font-style: inherit;
+        font-weight: bold; // Make the text bold
+        color: #2c3e50; // Dark blue color
+        text-transform: uppercase; // Transform text to uppercase
+        letter-spacing: 1px; // Add some letter spacing
+        margin-right: 2rem; // Add some margin to the right
+    }
+
     .logo {
         img {
             height: 80px;
