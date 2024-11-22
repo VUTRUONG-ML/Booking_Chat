@@ -28,7 +28,7 @@ export const registerUser = createAsyncThunk(
     }
 );
 
-export const loginUser = createAsyncThunk("auth/login", async (userData, thunkApi) => {
+export const loginUser  = createAsyncThunk("auth/login", async (userData, thunkApi) => {
     try {
         const res = await fetch("/api/users/login", {
             headers: {
@@ -36,21 +36,28 @@ export const loginUser = createAsyncThunk("auth/login", async (userData, thunkAp
             },
             method: "POST",
             body: JSON.stringify(userData)
-        })
+        });
+        
         if (!res.ok) {
             const error = await res.json();
             return thunkApi.rejectWithValue(error);
         }
+        
         const data = await res.json();
 
-        //set the data in localstorage
+        // Kiểm tra xem người dùng có phải là quản trị viên không
+        if (data.isAdmin !== true) {
+            return thunkApi.rejectWithValue({ message: "You do not have admin access." });
+        }
+
+        // Set the data in localstorage
         localStorage.setItem("user", JSON.stringify(data));
         return data;
 
     } catch (error) {
         return thunkApi.rejectWithValue(error.message);
     }
-})
+});
 
 export const logoutUser = createAsyncThunk("auth/users/logout", async (_, thunkApi) => {
     try {

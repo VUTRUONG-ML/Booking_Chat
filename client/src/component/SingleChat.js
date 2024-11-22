@@ -104,7 +104,7 @@ const fetchMessage = async () => {
         return () => {
             socket.off('message recieved');
         };
-    }, [messages, selectedChatCompare, notification]);
+    }, [messages, selectedChatCompare]);
 
     const sendMessage = async(event) => {
         if(event.key==="Enter" && newMessage){

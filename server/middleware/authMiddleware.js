@@ -14,7 +14,12 @@ const auth = async (req, res, next) => {
 
     const user = await User.findById(data.id);
     if (!user) {
-      return res.status(404).json({ message: "User not found!" });
+      return res.status(404).json({ message: "User  not found!" });
+    }
+
+    // Kiểm tra thuộc tính isAdmin
+    if (!user.isAdmin) {
+      return res.status(403).json({ message: "User  not admin!" });
     }
 
     req.user = user;
