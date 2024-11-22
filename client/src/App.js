@@ -31,7 +31,6 @@ const App = () => {
         <Route path="/privacy" element={<PrivacyPolicy />} />
 
       </Routes>
-      <Footer />
     </div>
   )
 }

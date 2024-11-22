@@ -1,33 +1,33 @@
 import { Tooltip } from "../../components/ui/tooltip"
-import { Box, Button,Spinner,Text, useDisclosure,   } from '@chakra-ui/react';
+import { Box, Button, Spinner, Text, useDisclosure, } from '@chakra-ui/react';
 import React, { useState } from 'react'
 import { FaBell, FaComments } from "react-icons/fa";
 import { ChatState } from "../../Context/ChatProvider";
-import { MenuContent, MenuItem,MenuRoot,MenuTrigger,} from "../../components/ui/menu"
-import { useNavigate  } from "react-router-dom";
+import { MenuContent, MenuItem, MenuRoot, MenuTrigger, } from "../../components/ui/menu"
+import { useNavigate } from "react-router-dom";
 import {
-  DrawerActionTrigger,
-  DrawerBackdrop,
-  DrawerBody,
-  DrawerCloseTrigger,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerRoot,
-  DrawerTitle,
-  DrawerTrigger,
+    DrawerActionTrigger,
+    DrawerBackdrop,
+    DrawerBody,
+    DrawerCloseTrigger,
+    DrawerContent,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerRoot,
+    DrawerTitle,
+    DrawerTrigger,
 } from "../../components/ui/drawer";
 import { Input, Stack } from "@chakra-ui/react"
 import { toaster, Toaster } from "../../components/ui/toaster"
 import axios from "axios";
-import ChatLoading from "../ChatLoading"; 
+import ChatLoading from "../ChatLoading";
 import UserListItem from "../UserClientAvatar/UserListItem";
 import { getSender } from "../../config/ChatLogic";
 import NotificationBadge from 'react-notification-badge';
-import {Effect} from 'react-notification-badge';
+import { Effect } from 'react-notification-badge';
 
 const SideDrawer = () => {
-    const { user, setSelectedChat, chats, setChats, notification,setNotification } = ChatState();
+    const { user, setSelectedChat, chats, setChats, notification, setNotification } = ChatState();
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -35,8 +35,8 @@ const SideDrawer = () => {
 
     const IdStaff = "674063576e58f0248e8afb38";
 
-    const {isOpen, onOpen} = useDisclosure();
-    const navigate = useNavigate(); 
+    const { isOpen, onOpen } = useDisclosure();
+    const navigate = useNavigate();
 
 
     const handleSearch = async () => {
@@ -82,26 +82,26 @@ const SideDrawer = () => {
         }
     };
 
-    const accessChat = async(userId) => {
-        
+    const accessChat = async (userId) => {
+
         try {
             setLoadingChat(true);
             const config = {
                 headers: {
-                    "Content-type":"application/json",
+                    "Content-type": "application/json",
                     Authorization: `Bearer ${user.token}`,
                 },
             };
 
-            const {data} = await axios.post('/api/chat', {userId}, config);
-            if(!chats.find((c) => c._id === data._id)) {
+            const { data } = await axios.post('/api/chat', { userId }, config);
+            if (!chats.find((c) => c._id === data._id)) {
                 setChats([data, ...chats]);
             }
 
             setSelectedChat(data);
-            
+
             setLoadingChat(false);
-           
+
         } catch (error) {
             toaster.create({
                 title: "Error fetching the chat",
@@ -114,7 +114,7 @@ const SideDrawer = () => {
     const isStaff = user._id === IdStaff;
     return <>
 
-        <Toaster/>
+        <Toaster />
         <Box
             display="flex"
             justifyContent="space-between"
@@ -176,16 +176,16 @@ const SideDrawer = () => {
                     </DrawerRoot>
                 </Tooltip>
             ) : (
-                <Button 
-                    onClick={() => accessChat(IdStaff)} 
-                    colorScheme="blue" 
+                <Button
+                    onClick={() => accessChat(IdStaff)}
+                    colorScheme="blue"
                     variant="solid"
                     display="flex" // Sử dụng Flexbox
                     alignItems="center" // Căn giữa theo chiều dọc
                     justifyContent="center" // Căn giữa theo chiều ngang
                     _hover={{ bg: "blue.600", color: "white" }} // Hiệu ứng hover
                 >
-                    <FaComments style={{ marginLeft:"7px" }} /> {/* Thay đổi margin để tạo khoảng cách giữa icon và chữ */}
+                    <FaComments style={{ marginLeft: "7px" }} /> {/* Thay đổi margin để tạo khoảng cách giữa icon và chữ */}
                     Chat with staff
                 </Button>
             )}
@@ -193,23 +193,23 @@ const SideDrawer = () => {
                 Support
             </Text>
             <div>
-                <Button 
-                    variant="outline" 
-                    size="sm" 
-                    // rightIcon={} // Thêm biểu tượng chuông
+                <Button
+                    variant="outline"
+                    size="sm"
+                // rightIcon={} // Thêm biểu tượng chuông
                 >
                     {user.email}
                 </Button>
                 <MenuRoot p={1}>
                     <MenuTrigger asChild>
-                    <Button variant="ghost" size="sm" >
-                        <FaBell style={{ marginLeft: '8px', verticalAlign: 'middle' }} />
+                        <Button variant="ghost" size="sm" >
+                            <FaBell style={{ marginLeft: '8px', verticalAlign: 'middle' }} />
 
-                        <NotificationBadge
-                            count={notification.length}
-                            effect={Effect.SCALE}
-                        />
-                    </Button>
+                            <NotificationBadge
+                                count={notification.length}
+                                effect={Effect.SCALE}
+                            />
+                        </Button>
                     </MenuTrigger>
                     <MenuContent style={{ paddingRight: '20px' }}>
                         {!notification.length && "No New Messages"}
