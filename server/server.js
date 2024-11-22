@@ -12,6 +12,8 @@ const messageRoutes = require("./routes/messageRoutes");
 
 const cookieParser = require("cookie-parser");
 const { auth } = require("./middleware/authMiddleware");
+const path = require("path");
+
 const port = process.env.PORT || 5000;
 //connect to database
 connectDB();
@@ -19,7 +21,6 @@ connectDB();
 //setup middlewares
 app.use(cookieParser());
 app.use(express.json()); // To accept JSON Data
-require("dotenv").config();
 
 
 
@@ -34,11 +35,39 @@ app.use("/api/message", messageRoutes);
 app.use("/api/userClient", userClientRoutes);
 
 
-app.use(notFound);
-app.use(errorHandler);
+// --------------------------deployment------------------------------
+
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+    // Middleware để phục vụ static files cho frontend chính
+    app.use(express.static(path.join(__dirname1, "/client/build")));
+
+    // Middleware để phục vụ static files cho frontend quản trị
+    // app.use('/admin', express.static(path.join(__dirname1, "/admin/build")));
+    
+    app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "client", "build", "index.html"));
+    });
+    
+    // // Định tuyến cho frontend quản trị
+    // app.get('/admin/*', (req, res) => {
+    // res.sendFile(path.resolve(__dirname1, "admin", "build", "index.html"));
+    // });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running..");
+  });
+}
+
+// --------------------------deployment------------------------------
 
 
 const server = app.listen(port, () => console.log(`listening on on port ${port}`));
+
+
+app.use(notFound);
+app.use(errorHandler);
 
 const io = require('socket.io')(server,{
     pingTimeout: 60000,
