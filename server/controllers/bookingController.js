@@ -42,7 +42,12 @@ const createBooking = async (req, res, next) => {
             checkOutDate: req.body.checkOutDate
         });
 
-        return res.status(201).json(booking);
+        return res.status(201).json({
+            success: true,
+            message: "Booking created successfully",
+            data: booking,
+        });
+
     } catch (error) {
         next(error);
     }
