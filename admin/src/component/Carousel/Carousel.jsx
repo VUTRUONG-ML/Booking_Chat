@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "./carousel.styles.scss";
-import { current } from "@reduxjs/toolkit";
 
 const Carousel = ({ data }) => {
-    const [currentIndex, setCurrentIndex] = useState(1);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => {
@@ -13,11 +13,12 @@ const Carousel = ({ data }) => {
 
         return () => clearInterval(interval);
     }, [data.length]);
+
     return (
         <div className="carousel-wrapper">
-            <img src={data[currentIndex]} alt="" />
+            {data.length > 0 && <img src={data[currentIndex]} alt={`Slide ${currentIndex}`} />}
         </div>
-    )
+    );
 }
 
-export default Carousel
+export default Carousel;

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import "./carousel.styles.scss";
-import { current } from "@reduxjs/toolkit";
 
 const Carousel = ({ data }) => {
-    const [currentIndex, setCurrentIndex] = useState(1);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
     useEffect(() => {
+        console.log("Carousel data:", data); // Log the data prop
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => {
                 return prevIndex === data.length - 1 ? 0 : prevIndex + 1;
@@ -13,11 +14,16 @@ const Carousel = ({ data }) => {
 
         return () => clearInterval(interval);
     }, [data.length]);
+
+    useEffect(() => {
+        console.log("Current index:", currentIndex); // Log the current index
+    }, [currentIndex]);
+
     return (
         <div className="carousel-wrapper">
-            <img src={data[currentIndex]} alt="" />
+            {data.length > 0 && <img src={data[currentIndex]} alt={`Slide ${currentIndex}`} />}
         </div>
-    )
+    );
 }
 
-export default Carousel
+export default Carousel;
