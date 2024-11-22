@@ -1,8 +1,8 @@
 const Booking = require("../models/bookingModel");
-
+const { sendBookingConfirmation } = require("../services/emailService");
 const getBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find();
+        const bookings = await Booking.find().populate("roomId");
         if (!bookings) {
             res.status(400);
             throw new Error("Cannot find bookings!");
@@ -13,18 +13,40 @@ const getBookings = async (req, res) => {
     }
 }
 
+// const createBooking = async (req, res, next) => {
+//     try {
+//         const booking = await Booking.create(req.body);
+//         if (!booking) {
+//             res.status(400);
+//             throw new Error("Cannot create booking");
+//         }
+//         return res.status(201).json(booking);
+//     } catch (error) {
+//         next(error);
+//     }
+// }
+
 const createBooking = async (req, res, next) => {
     try {
         const booking = await Booking.create(req.body);
         if (!booking) {
             res.status(400);
-            throw new Error("Cannot create booking");
+            throw new Error("Không thể tạo đặt phòng");
         }
+
+        // Gửi email xác nhận sau khi đặt phòng thành công
+        await sendBookingConfirmation(req.body.email, {
+            name: req.body.name,
+            roomId: req.body.roomId,
+            checkInDate: req.body.checkInDate,
+            checkOutDate: req.body.checkOutDate
+        });
+
         return res.status(201).json(booking);
     } catch (error) {
         next(error);
     }
-}
+};
 
 const updateBooking = async (req, res, next) => {
     try {

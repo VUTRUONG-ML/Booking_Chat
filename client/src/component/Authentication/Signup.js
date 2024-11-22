@@ -1,3 +1,4 @@
+
 import { Button, Fieldset, Input, Stack, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { Field } from "../../components/ui/field";
@@ -6,6 +7,70 @@ import { Toaster,toaster } from "../../components/ui/toaster"
 import axios from "axios";
 import { useNavigate  } from "react-router-dom";
 const Signup = () => {
+<<<<<<< HEAD
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [visible, setVisible] = useState(false);  // State to manage password visibility
+    const [visibleConfirmPassword, setVisibleConfirmPassword] = useState(false);  // State to manage confirm password visibility
+
+    const submitHandler = () => {
+
+    };
+    return (
+        <VStack spacing="5px">
+            <Fieldset.Root size="lg" maxW="md" color="black">
+                <Fieldset.Content>
+                    <Field label="Name" id="first-name" isRequired>
+                        <Input
+                            name="name"
+                            placeholder="Enter Your Name"
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </Field>
+
+                    <Field label="Email" id="email" isRequired>
+                        <Input
+                            name="email"
+                            type="email"
+                            placeholder="Enter Your Email"
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </Field>
+
+                    <Field label="Password" id="password" isRequired>
+                        <PasswordInput
+                            placeholder="Password"
+                            defaultValue={password}
+                            visible={visible}
+                            onVisibleChange={setVisible}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </Field>
+
+                    <Field label="Confirm Password" id="confirmPassword" isRequired>
+                        <PasswordInput
+                            placeholder="Enter Confirm Password"
+                            defaultValue={confirmPassword}
+                            visible={visibleConfirmPassword}
+                            onVisibleChange={setVisibleConfirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                    </Field>
+                </Fieldset.Content>
+
+                <Button
+                    width="100%"
+                    style={{ marginTop: 15 }}
+                    onClick={submitHandler}
+                >
+                    Sign up
+                </Button>
+            </Fieldset.Root>
+        </VStack>
+    );
+=======
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -134,6 +199,7 @@ const Signup = () => {
         <Toaster/>
     </VStack>
   );
+>>>>>>> f053d58c39bee8c2ac3787c4b02e9ed74b43fb54
 };
 
 export default Signup;

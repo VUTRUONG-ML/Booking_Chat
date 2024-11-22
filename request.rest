@@ -91,7 +91,19 @@ POST http://localhost:5000/api/users/login
 Content-Type: application/json
 
 {
-"email": "123@gmail.com", "password": "123"
+    "email": "123@gmail.com", "password": "12"
+}
+
+
+#create user client
+### 
+POST http://localhost:5000/api/userClient/
+Content-Type: application/json
+
+{
+    "name": "hoangthien",
+    "email": "la3@gmail.com", 
+    "password": "8888888812"
 }
 
 #login user client
@@ -100,8 +112,9 @@ POST http://localhost:5000/api/userClient/login
 Content-Type: application/json
 
 {
-"email": "la3@gmail.com", "password": "8888888812"
+ "email": "la3@gmail.com", "password": "8888888812"
 }
+
 #logout user 
 ### 
 GET http://localhost:5000/api/users/logout

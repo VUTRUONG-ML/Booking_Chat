@@ -1,0 +1,15 @@
+// home.styles.scss
+
+.imag-wra {
+    position: relative;
+    width: 100%;
+    height: 100vh; // or a fixed height depending on your design
+    overflow: hidden;
+
+    img {
+        width: 100%;
+
+        object-fit: cover; // This will ensure the image covers the entire container without distorting
+        object-position: center; // Optionally center the image
+    }
+}
