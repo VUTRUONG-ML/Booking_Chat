@@ -26,13 +26,16 @@ const BookingList = ({ data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(user => {
-                            console.log("User data:", user.roomId);
+                        {data.map((user) => {
+                            console.log("User data:", user);
+
+                            const roomName = user.roomId?.name || "No Room Assigned"; // Dùng optional chaining để tránh lỗi
+
                             return (
                                 <tr key={user._id}>
                                     <td data-label="Name">{user.name}</td>
                                     <td data-label="Email">{user.email}</td>
-                                    <td data-label="Room">{user.roomId.name}</td>
+                                    <td data-label="Room">{roomName}</td> {/* Hiển thị roomId.name nếu có */}
                                     <td data-label="Action">
                                         <Link to={`/bookings/${user._id}`}>View</Link>
                                     </td>
@@ -40,6 +43,7 @@ const BookingList = ({ data }) => {
                             );
                         })}
                     </tbody>
+
                 </table>
             </div>
         </div >
