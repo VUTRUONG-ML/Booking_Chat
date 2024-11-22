@@ -24,7 +24,7 @@ const Header = () => {
             <div className="container">
                 <Link to="/">
                     <div className="logo">
-                        <img src={process.env.PUBLIC_URL + "/logo.png"} alt="Logo" />
+                        <img src="https://res.cloudinary.com/dvvefarog/image/upload/v1732316055/logo_pooue7.png" alt="Logo" />
                     </div>
                 </Link>
                 <nav>
