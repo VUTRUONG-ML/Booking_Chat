@@ -1,5 +1,45 @@
-.Chat {
+.chat-page {
+    width: 100%;
+    height: 100vh;
     background-image: url("https://wallpapercave.com/wp/wp38040.jpg");
     background-size: cover;
     background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: black;
+}
+
+p {
+    color: black;
+}
+
+.chat-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 91.5vh;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chat-container>div {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.chat-container>div:first-child {
+    margin-left: 0;
+}
+
+.chat-container>div:last-child {
+    margin-right: 0;
 }

@@ -93,58 +93,60 @@ const Booking = () => {
 
     return (
         <div>
-            <h1 className="heading center">Book Now</h1>
-            <div className="form-wrapper">
-                {error && <div className="error-message">{error}</div>}
-                <form action="" onSubmit={handleSubmit}>
-                    <div className="input-group">
-                        <label htmlFor="name">Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            value={name}
-                            placeholder="Enter full name"
-                            onChange={handleChange}
-                        />
-                    </div>
+            <div className="background">
+                <h1 className="heading center">Book Now</h1>
+                <div className="form-wrapper">
+                    {error && <div className="error-message">{error}</div>}
+                    <form action="" onSubmit={handleSubmit}>
+                        <div className="input-group">
+                            <label htmlFor="name">Name</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={name}
+                                placeholder="Enter full name"
+                                onChange={handleChange}
+                            />
+                        </div>
 
-                    <div className="input-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={email}
-                            placeholder="Enter your email"
-                            onChange={handleChange}
-                        />
-                    </div>
+                        <div className="input-group">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                type="email"
+                                name="email"
+                                value={email}
+                                placeholder="Enter your email"
+                                onChange={handleChange}
+                            />
+                        </div>
 
-                    <div className="input-group">
-                        <label htmlFor="checkInDate">In date</label>
-                        <input
-                            type="date"
-                            name="checkInDate"
-                            value={checkInDate}
-                            onChange={handleChange}
-                        />
-                    </div>
+                        <div className="input-group">
+                            <label htmlFor="checkInDate">In date</label>
+                            <input
+                                type="date"
+                                name="checkInDate"
+                                value={checkInDate}
+                                onChange={handleChange}
+                            />
+                        </div>
 
-                    <div className="input-group">
-                        <label htmlFor="checkOutDate">Out date</label>
-                        <input
-                            type="date"
-                            name="checkOutDate"
-                            value={checkOutDate}
-                            onChange={handleChange}
-                        />
-                    </div>
+                        <div className="input-group">
+                            <label htmlFor="checkOutDate">Out date</label>
+                            <input
+                                type="date"
+                                name="checkOutDate"
+                                value={checkOutDate}
+                                onChange={handleChange}
+                            />
+                        </div>
 
-                    <button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? "Submitting..." : "Submit"}
-                    </button>
-                </form>
-            </div>
-        </div>
+                        <button type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? "Submitting..." : "Submit"}
+                        </button>
+                    </form >
+                </div >
+            </div >
+        </div >
     );
 };
 
