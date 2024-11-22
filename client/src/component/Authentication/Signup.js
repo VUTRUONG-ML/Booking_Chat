@@ -135,6 +135,7 @@ const Signup = () => {
             <Toaster />
         </VStack>
     );
+
 };
 
 export default Signup;
