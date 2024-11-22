@@ -9,6 +9,10 @@ import Chat from "./Pages/Chat/Chat";
 import Login from "./Pages/Login/Login";
 import Success from "./Pages/Success/Success";
 import Footer from "./component/Footer/Footer";
+import AboutBKHotel from "./component/AboutBKHotel/AboutBKHotel";
+import ContactBKHotel from "./component/ContactBKHotel/ContactBKHotel";
+import PrivacyPolicy from "./component/PrivacyPolicy/PrivacyPolicy";
+
 const App = () => {
   return (
     <div>
@@ -22,7 +26,9 @@ const App = () => {
         <Route path="/chat" element={<Chat />} />
         <Route path="/login" element={<Login />} />
         <Route path="/success" element={<Success />} />
-
+        <Route path="/aboutus" element={<AboutBKHotel />} />
+        <Route path="/contact" element={<ContactBKHotel />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
 
       </Routes>
       <Footer />
