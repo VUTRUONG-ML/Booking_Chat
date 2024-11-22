@@ -11,7 +11,6 @@ import Success from "./Pages/Success/Success";
 const App = () => {
   return (
     <div>
-      <Router>
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -25,7 +24,6 @@ const App = () => {
 
 
         </Routes>
-      </Router>
     </div>
   )
 }

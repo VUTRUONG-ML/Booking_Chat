@@ -4,6 +4,7 @@ const { getUsers, createUser, loginUser, logoutUser } = require("../controllers/
 
 const router = Router();
 
+
 router.get("/", auth, getUsers);
 //create user
 router.post("/", createUser);
