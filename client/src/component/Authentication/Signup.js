@@ -27,7 +27,7 @@ const Signup = () => {
         setLoading(false);
         return;
     }
-    if(password != confirmPassword){
+    if(password !== confirmPassword){
         toaster.create({
           title: "Incorrect re-entered password ...",
           type: "warning",
@@ -66,7 +66,7 @@ const Signup = () => {
         toaster.create({
             title: "Error Occured!",
             description: error.response?.data?.message,
-            type: "success",
+            type: "warning",
             duration: 5000,
             isclosable: true,
             position: "bottom",

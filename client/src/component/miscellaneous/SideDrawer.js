@@ -175,12 +175,13 @@ const SideDrawer = () => {
             <div>
                 <MenuRoot p={1}>
                     <MenuTrigger asChild>
-                        <Button variant="outline" size="sm"  position="relative">
+                        <Button variant="outline" size="sm"  >
+                            <FaBell />
                             <NotificationBadge
                                 count = {notification.length}
                                 effect={Effect.SCALE}
                             />
-                            <FaBell />
+                            
                         </Button>
                     </MenuTrigger>
                     <MenuContent style={{ paddingRight: '20px' }}>
