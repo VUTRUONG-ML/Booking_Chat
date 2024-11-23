@@ -28,9 +28,11 @@ const App = () => {
         <Route path="/success" element={<Success />} />
         <Route path="/aboutus" element={<AboutBKHotel />} />
         <Route path="/contact" element={<ContactBKHotel />} />
+        <Route path="/footer" element={<Footer />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
 
       </Routes>
+      <Footer />
     </div>
   )
 }

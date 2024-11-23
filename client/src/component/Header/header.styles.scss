@@ -1,11 +1,12 @@
 .main-header {
-
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     background-color: #ffffff;
     padding: 10px 0;
     z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     .container {
         display: flex;
@@ -16,30 +17,18 @@
         margin: 0 auto;
     }
 
-    .namewed {
-        font-family: 'Playfair Display', serif; // Use a beautiful serif font
-        font-size: 2rem; // Increase the font size
-        font-style: inherit;
-        font-weight: bold; // Make the text bold
-        color: #2c3e50; // Dark blue color
-        text-transform: uppercase; // Transform text to uppercase
-        letter-spacing: 1px; // Add some letter spacing
-        margin-right: 2rem; // Add some margin to the right
-    }
-
     .logo {
         img {
-            height: 80px;
-            /* Adjust the height as needed */
+            height: 60px; // Adjust the height as needed
         }
     }
 
-    nav {
+    .nav-links {
         display: flex;
         gap: 30px;
 
         a {
-            color: #000000;
+            color: #2c3e50;
             font-size: 1.2rem;
             text-decoration: none;
             transition: color 0.3s ease;
@@ -53,6 +42,18 @@
                 font-weight: bold;
                 border-bottom: 2px solid #3498db;
             }
+        }
+    }
+
+    .auth-buttons {
+
+        display: flex;
+        gap: 10px;
+
+        button {
+            color: black;
+            background-color: #ffffff;
+            font-size: 1rem;
         }
     }
 }

@@ -31,10 +31,7 @@ const Header = () => {
                         <img src={process.env.PUBLIC_URL + "/logo.png"} alt="Logo" />
                     </div>
                 </Link>
-                <nav className="namewed">
-                    <h1> BK HOTEL</h1>
-                </nav>
-                <nav>
+                <nav className="nav-links">
                     <Link to="/" className={isActive("/")}>
                         Home
                     </Link>
@@ -44,6 +41,8 @@ const Header = () => {
                     <Link to="/chat" className={isActive("/chat")}>
                         Chat
                     </Link>
+                </nav>
+                <div className="auth-buttons">
                     {!isLoggedIn ? (
                         <Button
                             colorScheme="teal"
@@ -56,7 +55,7 @@ const Header = () => {
                             Logout
                         </Button> // Hiện nút Logout khi đã đăng nhập
                     )}
-                </nav>
+                </div>
             </div>
         </header>
     );

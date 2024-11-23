@@ -40,7 +40,7 @@
     p {
         font-size: 1rem; // Giảm kích thước phông chữ
         margin-bottom: 0.8rem; // Giảm margin
-        color: #7f8c8d;
+        color: #000000;
         line-height: 1.4; // Giảm line-height
         text-align: justify;
     }
@@ -60,11 +60,10 @@
         background: rgba(255, 255, 255, 0.95);
         padding: 20px; // Giảm padding
         border-radius: 12px; // Giảm bán kính bo góc
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); // Giảm độ đổ bóng
         max-width: 800px; // Giảm chiều rộng tối đa
         width: 100%;
         overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: transform 0.3s ease;
 
         &:hover {
             transform: translateY(-8px); // Giảm khoảng cách dịch chuyển
