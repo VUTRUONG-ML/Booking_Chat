@@ -21,7 +21,7 @@ const Register = () => {
         if (isError) {
             // Kiểm tra và hiển thị thông báo lỗi
             const errorMessage = typeof message === 'string' ? message : JSON.stringify(message);
-            alert(errorMessage); // Hoặc bạn có thể sử dụng một cách khác để hiển thị thông báo
+            alert(errorMessage); 
             dispatch(reset());
         }
     }, [isSuccess, isError, message, user, dispatch, navigate]);

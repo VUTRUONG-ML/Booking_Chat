@@ -33,34 +33,44 @@ const SideDrawer = () => {
     const [loading, setLoading] = useState(false);
     const [loadingChat, setLoadingChat] = useState();
 
-    const IdStaff = "674063576e58f0248e8afb38";
+    const IdStaff = "6743f123cfc4f607b1410ef1";
 
     const { isOpen, onOpen } = useDisclosure();
     const navigate = useNavigate();
 
 
     const handleSearch = async () => {
+        // Kiểm tra xem người dùng có phải là IdStaff không
+        if (!user.isAdmin) {
+            try {
+                setLoading(true);
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${user?.token || ''}`,
+                    },
+                };
+                const { data } = await axios.get(`/api/userClient/admins`, config);
+                
+                setLoading(false);
+                return data; // Trả về kết quả
+            } catch (error) {
+                toaster.create({
+                    title: "Error Occurred",
+                    description: "Failed to connect Admin",
+                    type: "error",
+                    placement: "bottom-end"
+                });
+            }
+            return ;
+        }
         if (!search) {
             toaster.create({
                 title: "Please Fill all the fields",
                 type: "warning",
                 placement: "bottom-end"
             });
-            return;
+            return ;
         }
-
-        // Kiểm tra xem người dùng có phải là IdStaff không
-        if (user._id !== IdStaff) {
-            toaster.create({
-                title: "Access Denied",
-                description: "You can only message with the staff member.",
-                type: "error",
-                placement: "bottom-end"
-            });
-            return; // Ngừng hàm nếu không phải là IdStaff
-        }
-
-        // Tiến hành tìm kiếm nếu là IdStaff
         try {
             setLoading(true);
             const config = {
@@ -70,6 +80,7 @@ const SideDrawer = () => {
             };
 
             const { data } = await axios.get(`/api/userClient?search=${search}`, config);
+            console.log(data);
             setLoading(false);
             setSearchResult(data);
         } catch (error) {
@@ -111,7 +122,28 @@ const SideDrawer = () => {
             setLoadingChat(false);
         }
     };
-    const isStaff = user._id === IdStaff;
+    const connectToAdmin = async() =>{
+        const searchResults = await handleSearch();
+
+        if (!searchResults || searchResults.length === 0) {
+            toaster.create({
+                title: "Currently, there is no admin.",
+                type: "warning",
+                placement: "bottom-end",
+            });
+            return;
+        }
+
+        const toAdmin = searchResults[0]; // Lấy admin đầu tiên
+        if (!toAdmin) {
+            console.log("ADMIN NOT FOUND");
+        } else {
+            console.log("ADMIN:", toAdmin);
+            // Gọi accessChat hoặc thực hiện logic khác
+            await accessChat(toAdmin._id);
+        }
+    }
+    const isAdmin = user.isAdmin;
     return <>
 
         <Toaster />
@@ -124,7 +156,7 @@ const SideDrawer = () => {
             padding="5px 10px"
             borderWidth="5px"
         >
-            {isStaff ? (
+            {isAdmin ? (
                 <Tooltip
                     label="Search Users to chat"
                     hasArrow
@@ -177,7 +209,7 @@ const SideDrawer = () => {
                 </Tooltip>
             ) : (
                 <Button
-                    onClick={() => accessChat(IdStaff)}
+                    onClick={connectToAdmin}
                     colorScheme="blue"
                     variant="solid"
                     display="flex" // Sử dụng Flexbox

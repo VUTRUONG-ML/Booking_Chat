@@ -41,6 +41,12 @@ const UserLogin = () => {
             {email, password},
             config,
         );
+        const userInfo = {
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            isAdmin: data.isAdmin, // Thêm thuộc tính isAdmin
+        };
         localStorage.setItem("userInfo", JSON.stringify(data));
         toaster.create({
             title: "Login Successful",

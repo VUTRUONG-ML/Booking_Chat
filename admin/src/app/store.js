@@ -8,6 +8,5 @@ export const store = configureStore({
     auth: authReducer,
     room: roomReducer,
     booking: bookingReducer,
-
   },
 });

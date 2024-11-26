@@ -67,6 +67,7 @@ const authUser = expressAsyncHandler(async (req, res, next) => {
         const { password: userPassword, ...rest } = user._doc;
         return res.status(201).json({
             ...rest,
+            isAdmin: user.isAdmin,
             token: generateToken(user._id), 
         });
     } catch (error) {
@@ -87,8 +88,24 @@ const allUsers = expressAsyncHandler( async(req, res) => {
     const users = await User.find(keyword).find({_id: { $ne: req.user._id } }); // Tìm tất cả người dùng của keyword trên bỏ qua người dùng hiện tại
     res.send(users);
 });
+
+// /api/userClient/admins
+const adminUsers = expressAsyncHandler(async (req, res) => {
+    try {
+        // Tìm tất cả user có isAdmin = true
+        const users = await User.find({ 
+            isAdmin: true,
+            _id: { $ne: req.user._id } // Loại trừ user hiện tại
+        });
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi khi lấy danh sách admin", error: error.message });
+    }
+});
+
 module.exports = {
     registerUser,
     authUser,
     allUsers,
+    adminUsers,
 }

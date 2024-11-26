@@ -11,7 +11,7 @@ const ChatProvider = ({children}) => {
     const [chats, setChats] = useState([]);
     const [notification,setNotification] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));

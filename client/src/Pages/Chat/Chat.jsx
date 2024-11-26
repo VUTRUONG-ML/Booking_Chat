@@ -11,7 +11,6 @@ const Chat = () => {
     const [fetchAgain, setFetchAgain] = useState(false);
     return (
         <div className="background-">
-
             {user && <SideDrawer />}
             <Box className="chat-container">
                 {user && <MyChats fetchAgain={fetchAgain} />}

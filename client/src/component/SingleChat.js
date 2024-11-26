@@ -3,7 +3,6 @@ import { ChatState } from '../Context/ChatProvider'
 import { Box, IconButton, Input, Spinner, Text, Timeline } from '@chakra-ui/react';
 import { Field } from "../components/ui/field"
 import { IoArrowBack } from "react-icons/io5";
-import { Icon } from "@chakra-ui/react"
 import { getSender } from '../config/ChatLogic';
 import axios from 'axios';
 import { toaster, Toaster } from '../components/ui/toaster';
@@ -24,17 +23,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     const [typing, setTyping] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
     const [socketConnected, setSocketConnected] = useState(false); 
-
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: animationData,
-        renderSettings:{
-            preserveAspectRatio: "xMidYMid slice",  
-        }
-    }
-
-    
 
     const {user, selectedChat, setSelectedChat, notification,setNotification} = ChatState();
 
@@ -163,6 +151,9 @@ const fetchMessage = async () => {
             }
         }, timerLength);
     };
+    useEffect(() => {
+        console.log("Is typing:", isTyping);
+    }, [isTyping]);
   return (<>{
     selectedChat ? (
         <>
