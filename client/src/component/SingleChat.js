@@ -12,7 +12,7 @@ import io from 'socket.io-client'
 import Lottie from "lottie-react";
 import animationData from '../animation/typing.json'
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "http://192.168.1.164:5000";
 var socket, selectedChatCompare;
 
 
@@ -45,7 +45,7 @@ const fetchMessage = async () => {
         toaster.create({
             title: "Error Occurred!",
             description: "Failed to fetch messages",
-            type: "error", 
+            type: "error",
             placement: "bottom"
         });
     } finally {

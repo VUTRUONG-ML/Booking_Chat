@@ -64,9 +64,10 @@ const loginUser = async (req, res, next) => {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
         res.cookie("jwt", token);
 
-        const { password: userPassword, ...rest } = user._doc;
+        const { password: userPassword, isAdmin, ...rest } = user._doc;
         return res.status(201).json({
             ...rest,
+            isAdmin,
         });
     } catch (error) {
         next(error);

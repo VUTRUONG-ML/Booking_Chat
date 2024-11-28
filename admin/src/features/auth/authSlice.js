@@ -69,7 +69,7 @@ export const logoutUser = createAsyncThunk("auth/users/logout", async (_, thunkA
         const data = await res.json();
 
         //remove user room in localstorage
-        localStorage.setItem("user", JSON.stringify(data));
+        localStorage.removeItem("user", JSON.stringify(data));
         return data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.message);

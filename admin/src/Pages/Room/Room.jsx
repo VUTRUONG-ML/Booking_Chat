@@ -21,6 +21,9 @@ const Room = () => {
             navigate("/rooms");
             dispatch(reset());
         }
+        if(!user){
+            navigate("/login");
+        }
     })
 
     useEffect(() => {
