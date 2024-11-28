@@ -1,18 +1,18 @@
 import "./header.styles.scss";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser, reset } from "../../features/auth/authSlice";
 import { useEffect, useState } from "react";
-
 const Header = () => {
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const location = useLocation();
     const [activeLink, setActiveLink] = useState(location.pathname);
-
+    const navigate = useNavigate();
     const handleLogout = async () => {
         dispatch(logoutUser());
         dispatch(reset());
+        navigate("/login");
     };
 
     useEffect(() => {
