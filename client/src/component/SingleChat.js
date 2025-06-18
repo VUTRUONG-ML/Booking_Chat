@@ -12,7 +12,7 @@ import io from 'socket.io-client'
 import Lottie from "lottie-react";
 import animationData from '../animation/typing.json'
 
-const ENDPOINT = "http://192.168.1.164:5000";
+const ENDPOINT = "http://192.168.88.187:5000"; // Thay đổi khi triển khai hoặc chạy trên máy khác 
 var socket, selectedChatCompare;
 
 

@@ -34,7 +34,7 @@ const sendBookingConfirmation = async (to, bookingDetails) => {
                         </li>
                     </ul>
                     <div style="text-align: center;">
-                        <img src="https://res.cloudinary.com/dvvefarog/image/upload/v1732290834/QR_c0tj7i.jpg" alt="QR Code" style="max-width: 100%; height: auto; border-radius: 8px;"/>
+                        <img src="https://res.cloudinary.com/dvvefarog/image/upload/v1732901665/z6060000453380_e1857ad9614246ab92f467a0119c435c_i4cllr.jpg" alt="QR Code" style="max-width: 100%; height: auto; border-radius: 8px;"/>
                     </div>
                     <p style="margin-top: 20px;">Chúng tôi rất mong được đón tiếp bạn!</p>
                     <footer style="text-align: center; margin-top: 30px; font-size: 0.9em; color: #777;">

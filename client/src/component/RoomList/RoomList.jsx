@@ -7,7 +7,7 @@ const RoomList = ({ data }) => {
     return (
         <div className="container">
             <div id="room-list">
-                <h1 className="heading">DANH SÁCH CÁC PHÒNG</h1>
+                <h1 className="heading">LIST OF THE ROOM</h1>
                 {data.map((item, index) => {
                     return (
 
