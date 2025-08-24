@@ -68,43 +68,49 @@ const Booking = () => {
         <div className="booking-container">
             <h1 className="heading">Booking Details</h1>
 
-            {booking && (
-                <div className="text-wrapper">
-                    <div className="booking-info">
-                        <div className="label">Name</div>
-                        <div className="value">{booking.name}</div>
-                    </div>
-
-                    <div className="booking-info">
-                        <div className="label">Room</div>
-                        <div className="value">{booking.roomId.name}</div>
-                    </div>
-
-                    <div className="booking-info">
-                        <div className="label">Email</div>
-                        <div className="value">{booking.email}</div>
-                    </div>
-
-                    <div className="booking-dates">
-                        <div className="date-info">
-                            <div className="label">Check-In Date</div>
-                            <div className="date">{booking.checkInDate}</div>
+            {booking ? (
+                booking.roomId && booking.name && booking.email ? (
+                    <div className="text-wrapper">
+                        <div className="booking-info">
+                            <div className="label">Name</div>
+                            <div className="value">{booking.name}</div>
                         </div>
-                        <div className="date-info">
-                            <div className="label">Check-Out Date</div>
-                            <div className="date">{booking.checkOutDate}</div>
+
+                        <div className="booking-info">
+                            <div className="label">Room</div>
+                            <div className="value">{booking.roomId.name}</div>
+                        </div>
+
+                        <div className="booking-info">
+                            <div className="label">Email</div>
+                            <div className="value">{booking.email}</div>
+                        </div>
+
+                        <div className="booking-dates">
+                            <div className="date-info">
+                                <div className="label">Check-In Date</div>
+                                <div className="date">{booking.checkInDate}</div>
+                            </div>
+                            <div className="date-info">
+                                <div className="label">Check-Out Date</div>
+                                <div className="date">{booking.checkOutDate}</div>
+                            </div>
+                        </div>
+
+                        <div className="action-buttons">
+                            <button className="btn confirm-btn" onClick={handleConfirm} disabled={isConfirming}>
+                                {isConfirming ? "Confirming..." : "Confirm"} {/* Thay đổi văn bản nút xác nhận */}
+                            </button>
+                            <button className="btn delete-btn" onClick={handleDelete} disabled={isDeleting}>
+                                {isDeleting ? "Deleting..." : "Delete"}
+                            </button>
                         </div>
                     </div>
-
-                    <div className="action-buttons">
-                        <button className="btn confirm-btn" onClick={handleConfirm} disabled={isConfirming}>
-                            {isConfirming ? "Confirming..." : "Confirm"} {/* Thay đổi văn bản nút xác nhận */}
-                        </button>
-                        <button className="btn delete-btn" onClick={handleDelete} disabled={isDeleting}>
-                            {isDeleting ? "Deleting..." : "Delete"}
-                        </button>
-                    </div>
-                </div>
+                ) : (
+                    <div className="error-message">Booking không đầy đủ thông tin.</div>
+                )
+            ) : (
+                <div className="error-message">Booking không tồn tại hoặc đã bị xóa.</div>
             )}
         </div>
     );

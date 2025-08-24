@@ -17,6 +17,8 @@ const CreateRoom = () => {
         roomNumbers: "401, 203, 232, 234"
     })
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const { name, price, desc, roomNumbers } = formData;
 
     useEffect(() => {
@@ -47,7 +49,9 @@ const CreateRoom = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
         if (!name || !price || !roomNumbers) {
+            setIsSubmitting(false); 
             return;
         }
         const roomArray = roomNumbers.split(",").map((item) => {
@@ -73,6 +77,7 @@ const CreateRoom = () => {
         }
         //dispatch createRoom function
         dispatch(createRoom(dataToSubmit));
+        setIsSubmitting(false);
     }
     return (
         <div className="container">
@@ -130,7 +135,11 @@ const CreateRoom = () => {
                                 onChange={handleFileChange}
                             />
                         </div>
-                        <button type="submit">Submit</button>
+                        <button type="submit"
+                            disabled = {isSubmitting}
+                        >
+                            {isSubmitting ? "Submitting..." : "Submit"}
+                        </button>
                     </form>
                 </div>
             </div>
